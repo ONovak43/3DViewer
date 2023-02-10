@@ -1,4 +1,4 @@
-#include "Matrix.hpp"
+#pragma once
 
 template<typename T, std::size_t S>
 constexpr VML::Matrix<T, S>::Matrix()
@@ -16,6 +16,23 @@ constexpr VML::Matrix<T, S>::Matrix(T value)
 	}
 }
 
+template<typename T, std::size_t S>
+template<typename ArrayData>
+	requires
+std::is_same_v<std::remove_cvref_t<ArrayData>, std::array<T, S* S>>
+constexpr VML::Matrix<T, S>::Matrix(ArrayData&& values)
+	: _mData1D(std::forward<ArrayData>(values))
+{
+};
+
+template<typename T, std::size_t S>
+template<typename ArrayData>
+	requires
+std::is_same_v<std::remove_cvref_t<ArrayData>, std::array<std::array<T, S>, S>>
+constexpr VML::Matrix<T, S>::Matrix(ArrayData&& values)
+	: _mData2D(std::forward<ArrayData>(values))
+{
+};
 
 template<typename T, std::size_t S>
 constexpr T& VML::Matrix<T, S>::operator()(std::size_t row, std::size_t column)
@@ -40,6 +57,12 @@ template<typename T, std::size_t S>
 constexpr const T& VML::Matrix<T, S>::operator[](std::size_t i) const
 {
 	return _mData1D[i];
+}
+
+template<class T, std::size_t S>
+std::array<std::array<T, S>, S> VML::Matrix<T, S>::toArray() const
+{
+	return _mData2D;
 }
 
 template<typename T, std::size_t S>
@@ -85,7 +108,7 @@ constexpr VML::Matrix<T, S> VML::operator*(const VML::Matrix<T, S>& matrix, floa
 	VML::Matrix<T, S> result;
 
 	for (auto i = 0; i < S * S; ++i) {
-		result[i] = matrix[i] * scale;
+		result[i] = static_cast<T>(matrix[i] * scale);
 	}
 
 	return result;

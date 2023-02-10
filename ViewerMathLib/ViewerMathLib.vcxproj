@@ -41,13 +41,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -137,14 +137,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Matrix.hpp" />
-    <ClInclude Include="Matrix_private.hpp" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Vector_private.hpp" />
+    <ClInclude Include="Matrices.hpp" />
+    <ClInclude Include="Matrix.inl" />
+    <ClInclude Include="MatrixTransform.hpp" />
+    <ClInclude Include="Vector.hpp" />
+    <ClInclude Include="Vectors.hpp" />
+    <ClInclude Include="Vector.inl" />
+    <ClInclude Include="VectorTransform.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Vector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MatrixTransform.inl" />
+    <None Include="VectorTransform.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

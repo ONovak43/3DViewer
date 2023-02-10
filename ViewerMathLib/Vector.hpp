@@ -1,7 +1,7 @@
-#ifndef INCLUDE_VECTOR_4D
-#define INCLUDE_VECTOR_4D
+#pragma once
 
 #include <array>
+#include <span>
 #include <type_traits>
 #include <iostream>
 
@@ -55,7 +55,7 @@ namespace VML
 		 * @brief Conversion to an array of values
 		 * @return Array of 4 values of type T representing the vector
 		 */
-		constexpr VectorData toArray() const;
+		constexpr VectorData toArray() const noexcept;
 
 	private:
 		/**
@@ -141,6 +141,4 @@ namespace VML
 	template class Vector<double, 4>;
 }
 
-#include "Vector_private.hpp" // Inclusion model
-
-#endif
+#include "Vector.inl" // Inclusion model

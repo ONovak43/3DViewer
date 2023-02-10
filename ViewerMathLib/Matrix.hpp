@@ -1,5 +1,4 @@
-#ifndef INCLUDE_MATRIX_3D
-#define INCLUDE_MATRIX_3D
+#pragma once
 
 #include <array>
 #include <type_traits>
@@ -11,7 +10,7 @@ namespace VML
 	 * @class Matrix
 	 * @brief Represents a square matrix.
 	 *
-	 * This class is used to represent a square matrix in a homogeneous coordinate system.
+	 * This class is used to represent a square matrix.
 	 *
 	 * @tparam T Type of the matrix elements (float, double or int)
 	 * @tparam S Size of the square matrix (float, double or int)
@@ -90,7 +89,7 @@ namespace VML
 		 * @brief Conversion to an array of values
 		 * @return Array of S*S values of type T representing the matrix
 		 */
-		 MatrixData1D toArray() const;
+		 MatrixData2D toArray() const;
 
 	private:
 		/**
@@ -98,13 +97,6 @@ namespace VML
 		*/
 		union
 		{
-			struct
-			{
-				T _m00, _m01, _m02, _m03;
-				T _m10, _m11, _m12, _m13;
-				T _m20, _m21, _m22, _m23;
-				T _m30, _m31, _m32, _m33;
-			};
 			MatrixData1D _mData1D;
 			MatrixData2D _mData2D;
 		};
@@ -148,7 +140,7 @@ namespace VML
 	template <typename T, std::size_t S>
 	constexpr Matrix<T, S> operator*(const VML::Matrix<T, S>& matrix, float scale);
 
-	/**
+	/** 
 	* @brief Overloaded operator for matrix multiplication
 	* @param lhs The left matrix
 	* @param rhs The right matrix
@@ -196,7 +188,4 @@ namespace VML
 	template class Matrix<double, 4>;
 }
 
-#include "Matrix_private.hpp" // Inclusion model
-
-#endif
-
+#include "Matrix.inl" // Inclusion model

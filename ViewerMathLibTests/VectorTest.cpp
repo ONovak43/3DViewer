@@ -1,5 +1,6 @@
 #include "pch.h"
-#include "../ViewerMathLib/Vector.cpp"
+#include "../ViewerMathLib/Vector.hpp"
+#include "../ViewerMathLib/VectorTransform.hpp"
 
 namespace
 {
@@ -108,10 +109,10 @@ namespace
         v41 += v42;
 
         // Then
-        EXPECT_EQ(v41[0], 6);
-        EXPECT_EQ(v41[1], 8);
-        EXPECT_EQ(v41[2], 10);
-        EXPECT_EQ(v41[3], 12);
+        EXPECT_FLOAT_EQ(v41[0], 6);
+        EXPECT_FLOAT_EQ(v41[1], 8);
+        EXPECT_FLOAT_EQ(v41[2], 10);
+        EXPECT_FLOAT_EQ(v41[3], 12);
     }
 
     // Story:
@@ -167,10 +168,10 @@ namespace
         Vector<float, 4> result = v41 * scalar;
 
         // Then
-        EXPECT_EQ(result[0], 2);
-        EXPECT_EQ(result[1], 4);
-        EXPECT_EQ(result[2], 6);
-        EXPECT_EQ(result[3], 8);
+        EXPECT_FLOAT_EQ(result[0], 2);
+        EXPECT_FLOAT_EQ(result[1], 4);
+        EXPECT_FLOAT_EQ(result[2], 6);
+        EXPECT_FLOAT_EQ(result[3], 8);
     }
 
     // Story:
@@ -187,9 +188,67 @@ namespace
         v41 *= scalar;
 
         // Then
-        EXPECT_EQ(v41[0], 2);
-        EXPECT_EQ(v41[1], 4);
-        EXPECT_EQ(v41[2], 6);
-        EXPECT_EQ(v41[3], 8);
+        EXPECT_FLOAT_EQ(v41[0], 2);
+        EXPECT_FLOAT_EQ(v41[1], 4);
+        EXPECT_FLOAT_EQ(v41[2], 6);
+        EXPECT_FLOAT_EQ(v41[3], 8);
     }
+
+    // VectorTransform.hpp tests
+
+    TEST(VectorTest, TestDotProduct) {
+        // Given
+        Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+        Vector<float, 4> v42(std::array{ 5.f, 6.f, 7.f, 8.f });
+        auto expectedDotProduct = 70.f;
+
+        // When
+        auto result = VML::dot(v41, v42);
+
+        // Then
+        EXPECT_FLOAT_EQ(result, expectedDotProduct);
+    }
+
+    // Story:
+    // [Who] As a 3D graphics programmer.
+    // [What] I want to calculate the dot product of two vectors.
+    // [Value] So that I can understand the angle between the two vectors and use it for calculations and transformations in 3D space.
+
+     // Story:
+    // [Who] As a 3D graphics programmer.
+    // [What] I want to normalize a Vector.
+    // [Value] So that I can ensure that the Vector has a length of 1 and can be used for 
+    TEST(VectorTest, TestLength) {
+        // Given
+        Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+        auto expectedLength = std::sqrt(30);
+
+        // When
+        auto result = VML::length(v41);
+
+        // Then
+        EXPECT_FLOAT_EQ(result, expectedLength);
+    }
+   
+    // Story:
+    // [Who] As a 3D graphics programmer.
+    // [What] I want to normalize a Vector.
+    // [Value] So that I can ensure that the Vector has a length of 1 and can be used for various calculations.
+    TEST(VectorTest, TestNormalize)
+    {
+        // Given
+        Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+        auto expectedLength = std::sqrt(30);
+
+        // When
+        auto result = VML::normalize(v41);
+
+        // Then
+        for (auto i = 0; i < 4; ++i) {
+            EXPECT_FLOAT_EQ(result[i], v41[i] / expectedLength);
+        }
+    }
+
+
 }
+

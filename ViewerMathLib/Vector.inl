@@ -1,10 +1,19 @@
-#include "Vector.h"
+#pragma once
 
 template<class T, std::size_t S>
 constexpr VML::Vector<T, S>::Vector()
 	: _vData{}
 {
 }
+
+template<class T, std::size_t S>
+template<typename ArrayData>
+	requires
+std::is_same_v<std::remove_cvref_t<ArrayData>, std::array<T, S>>
+constexpr VML::Vector<T, S>::Vector(ArrayData&& values)
+	: _vData(std::forward<ArrayData>(values))
+{
+};
 
 template<class T, std::size_t S>
 constexpr T& VML::Vector<T, S>::operator[](std::size_t i)
@@ -19,7 +28,7 @@ constexpr const T& VML::Vector<T, S>::operator[](std::size_t i) const
 }
 
 template<class T, std::size_t S>
-constexpr std::array<T, S> VML::Vector<T, S>::toArray() const
+constexpr std::array<T, S> VML::Vector<T, S>::toArray() const noexcept
 {
 	return _vData;
 }
@@ -95,3 +104,4 @@ constexpr VML::Vector<T, S>& VML::operator*=(VML::Vector<T, S>& lhs, float rhs)
 
 	return lhs;
 }
+
