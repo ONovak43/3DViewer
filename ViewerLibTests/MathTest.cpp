@@ -1,8 +1,10 @@
 #include "pch.h"
-#include "../ViewerMathLib/Matrix.hpp"
-#include "../ViewerMathLib/MatrixTransform.hpp"
+#include "../ViewerLib/src/Math/Matrix.hpp"
+#include "../ViewerLib/src/Math/MatrixTransform.hpp"
+#include "../ViewerLib/src/Math/Vector.hpp"
+#include "../ViewerLib/src/Math/VectorTransform.hpp"
 
-namespace
+namespace MatrixTest
 {
 	using VML::Matrix;
 
@@ -73,8 +75,8 @@ namespace
 	TEST(MatrixTest, TestParenthesisOperator) {
 
 		// Given
-		constexpr std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
+		constexpr std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
 
 		// When
 		auto element = m1(2, 3);
@@ -96,8 +98,8 @@ namespace
 	TEST(MatrixTest, TestSubscriptOperator)
 	{
 		// Given
-		constexpr std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
+		constexpr std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
 
 		// When
 		auto element = m1[4];
@@ -119,8 +121,8 @@ namespace
 	TEST(MatrixTest, TestSubscriptOperator2x2)
 	{
 		// Given
-		constexpr std::array<int, 4> mdata = { 1, 2, 3, 4 };
-		Matrix<int, 2> m1(mdata);
+		constexpr std::array<int32_t, 4> mdata = { 1, 2, 3, 4 };
+		Matrix<int32_t, 2> m1(mdata);
 
 		// When
 		auto element = m1[3];
@@ -142,8 +144,8 @@ namespace
 	TEST(MatrixTest, TestToArray)
 	{
 		// Given
-		constexpr std::array<std::array<int, 3>, 3> mdata = { {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}} };
-		Matrix<int, 3> m1(mdata);
+		constexpr std::array<std::array<int32_t, 3>, 3> mdata = { {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}} };
+		Matrix<int32_t, 3> m1(mdata);
 
 		// When
 		auto element = m1.toArray();
@@ -162,13 +164,13 @@ namespace
 	//      [Value] So I can use the result to apply transformations to 3D models.
 	TEST(MatrixTest, TestAdditionOperator) {
 		// Given
-		std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
+		std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
 
 		mdata = { 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-		Matrix<int, 4> m2(mdata);
+		Matrix<int32_t, 4> m2(mdata);
 
-		std::array<int, 16> expectedResult = { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17 };
+		std::array<int32_t, 16> expectedResult = { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17 };
 
 		// When
 		auto result = m1 + m2;
@@ -185,13 +187,13 @@ namespace
 	//      [Value] So I can use the result to apply transformations to 3D models.
 	TEST(MatrixTest, TestSubtractionOperator) {
 		// Given
-		std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
+		std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
 
 		mdata = { 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-		Matrix<int, 4> m2(mdata);
+		Matrix<int32_t, 4> m2(mdata);
 
-		std::array<int, 16> expectedResult = { -15, -13, -11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11, 13, 15 };
+		std::array<int32_t, 16> expectedResult = { -15, -13, -11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11, 13, 15 };
 
 		// When
 		auto result = m1 - m2;
@@ -208,12 +210,12 @@ namespace
 	//      [Value] So that I can apply multiple transformations to an object at once.
 	TEST(MatrixTest, TestMultiplyOperator) {
 		// Given
-		std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
-		Matrix<int, 4> m2(mdata);
+		std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
+		Matrix<int32_t, 4> m2(mdata);
 
 		mdata = { 90, 100, 110, 120, 202, 228, 254, 280, 314, 356, 398, 440, 426, 484, 542, 600 };
-		Matrix<int, 4> expected(mdata);
+		Matrix<int32_t, 4> expected(mdata);
 
 		// When
 		auto result = m1 * m2;
@@ -230,9 +232,9 @@ namespace
 	//      [Value] So that I can apply multiple transformations to an object at once.
 	TEST(MatrixTest, TestMultiplyOperator3x3Matrix) {
 		// Given
-		std::array<int, 9> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-		Matrix<int, 3> m1(mdata);
-		Matrix<int, 3> m2(mdata);
+		std::array<int32_t, 9> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		Matrix<int32_t, 3> m1(mdata);
+		Matrix<int32_t, 3> m2(mdata);
 
 		mdata = { 30, 36, 42, 66, 81, 96, 102, 126, 150 };
 
@@ -252,8 +254,8 @@ namespace
 	TEST(MatrixTest, TestMultiplyOperatorForScalar)
 	{
 		// Given
-		constexpr std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
+		constexpr std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
 		constexpr auto scalar = 2.0f;
 
 		// When
@@ -274,8 +276,8 @@ namespace
 	TEST(MatrixTest, MultiplyAssignmentOperatorWithScalar)
 	{
 		// Given 
-		constexpr std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
+		constexpr std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
 		constexpr auto scalar = 2.0f;
 
 		// When
@@ -296,12 +298,12 @@ namespace
 	TEST(MatrixTest, TestEqualityOperator)
 	{
 		// Given
-		std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
-		Matrix<int, 4> m2(mdata);
+		std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
+		Matrix<int32_t, 4> m2(mdata);
 
 		mdata[15] = 17;
-		Matrix<int, 4> m3(mdata);
+		Matrix<int32_t, 4> m3(mdata);
 
 		// When
 		bool equal = (m1 == m2);
@@ -319,12 +321,12 @@ namespace
 	TEST(MatrixTest, TestInequalityOperator)
 	{
 		// Given
-		std::array<int, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		Matrix<int, 4> m1(mdata);
-		Matrix<int, 4> m2(mdata);
+		std::array<int32_t, 16> mdata = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		Matrix<int32_t, 4> m1(mdata);
+		Matrix<int32_t, 4> m2(mdata);
 
 		mdata[15] = 17;
-		Matrix<int, 4> m3(mdata);
+		Matrix<int32_t, 4> m3(mdata);
 
 		// When
 		bool inequal = (m1 != m3);
@@ -339,7 +341,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What] I need to calculate ortho matrix.
 	//      [Value] So that I can see the 3D objects in orthographic view.
-	TEST(MatrixTraformTest, TestOrthoMatrix) {
+	TEST(MatrixTransformTest, TestOrthoMatrix) {
 		// Given
 		constexpr auto left = -1.0f;
 		constexpr auto right = 1.0f;
@@ -365,7 +367,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What] I need to calculate a perspective projection matrix.
 	//      [Value] So that the objects in the scene appear to be in the distance or closer.
-	TEST(MatrixTraformTest, TestPerspectiveMatrix)
+	TEST(MatrixTransformTest, TestPerspectiveMatrix)
 	{
 		// Given
 		constexpr auto fov = 90.f;
@@ -390,7 +392,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What]  I need to calculate the determinant of a 4x4 matrix.
 	//      [Value] So that I can calculate the scaling factor and inverse of a matrix.
-	TEST(MatrixTraformTest, DeterminantTestZeroDeterminant4x4) {
+	TEST(MatrixTransformTest, TestDeterminantZeroDeterminant4x4) {
 		// Given
 		std::array<float, 16> mdata = { 1, 2, 3, 4, 1, 2, 3, 4, 0, 0, 3, 4, 0, 0, 0, 4 };
 		Matrix<float, 4> m1(mdata);
@@ -407,7 +409,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What]  I need to calculate the determinant of a 4x4 matrix.
 	//      [Value] So that I can calculate the scaling factor and inverse of a matrix.
-	TEST(MatrixDeterminantTest, DeterminantTestPositiveDeterminant4x4) {
+	TEST(MatrixTransformTest, TestDeterminantPositiveDeterminant4x4) {
 		// Given
 		Matrix<float, 4> m1(1.f);
 
@@ -423,7 +425,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What] I need to calculate the determinant of a 4x4 matrix.
 	//      [Value] So that I can calculate the scaling factor and inverse of a matrix.
-	TEST(MatrixDeterminantTest, DeterminantTestNegativeDeterminant4x4) {
+	TEST(MatrixTransformTest, TestDeterminantNegativeDeterminant4x4) {
 		// Given
 		Matrix<float, 4> m1(std::array{ 1.f, 0.f, 3.f, 2.f, 2.f, 1.f, 0.f, 4.f, 1.f, 0.f, 4.f, 1.f, 2.f, 0.f, 2.f, 1.f });
 
@@ -438,7 +440,7 @@ namespace
 	//    [Who] As a 3DViewer programmer.
 	//    [What] I need to calculate the determinant of a 3x3 matrix.
 	//    [Value] So that I can calculate the scaling factor and inverse of a matrix.
-	TEST(MatrixTraformTest, DeterminantTestZeroDeterminant3x3)
+	TEST(MatrixTransformTest, TestDeterminantZeroDeterminant3x3)
 	{
 		// Given
 		std::array<float, 9> mdata = { 1, 2, 3, 1, 2, 3, 0, 0, 3 };
@@ -457,7 +459,7 @@ namespace
 	//    [Who] As a 3DViewer programmer.
 	//    [What] I need to calculate the determinant of a 3x3 matrix.
 	//    [Value] So that I can calculate the scaling factor and inverse of a matrix.
-	TEST(MatrixTraformTest, DeterminantTestPositiveDeterminant3x3)
+	TEST(MatrixTransformTest, TestDeterminantPositiveDeterminant3x3)
 	{
 		// Given
 		Matrix<float, 3> m1(1.f);
@@ -474,7 +476,7 @@ namespace
 	//    [Who] As a 3DViewer programmer.
 	//    [What] I need to calculate the determinant of a 3x3 matrix.
 	//    [Value] So that I can calculate the scaling factor and inverse of a matrix.
-	TEST(MatrixTraformTest, DeterminantTestNegativeDeterminant3x3)
+	TEST(MatrixTransformTest, TestDeterminantNegativeDeterminant3x3)
 	{
 		// Given
 		Matrix<float, 3> m1(1.f);
@@ -497,7 +499,7 @@ namespace
 	//      [Who] As a graphics programmer.
 	//      [What] I need to find the transpose of a matrix.
 	//      [Value] So that I can quickly change the orientation of the objects in my 3D viewer.
-	TEST(MatrixTransformTest, TransposeTest)
+	TEST(MatrixTransformTest, TestTranspose)
 	{
 		// Given
 		Matrix<float, 3> m1(std::array{ 1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f });
@@ -514,7 +516,7 @@ namespace
 	//		[Who] As a 2D game programmer.
 	//		[What] I need to calculate the inverse of a 2x2 matrix.
 	//		[Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestSingular2x2)
+	TEST(MatrixTransformTest, TestInverseSingular2x2)
 	{
 		// Given
 		Matrix<float, 2> m1(std::array{ 1.f, 2.f, 2.f, 4.f });
@@ -528,7 +530,7 @@ namespace
 	//		[Who] As a 2D game programmer.
 	//		[What] I need to calculate the inverse of a 2x2 matrix.
 	//		[Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestPositiveDeterminant2x2)
+	TEST(MatrixTransformTest, TestInversePositiveDeterminant2x2)
 	{
 		// Given
 		Matrix<float, 2> m1(std::array{ 3.f, 1.f, 2.f, 5.f });
@@ -548,7 +550,7 @@ namespace
 	//		[Who] As a 2D game programmer.
 	//		[What] I need to calculate the inverse of a 2x2 matrix.
 	//		[Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestNegativeDeterminant2x2)
+	TEST(MatrixTransformTest, TestInverseNegativeDeterminant2x2)
 	{
 		// Given
 		Matrix<float, 2> m1(std::array{ 2.f, 1.f, 2.f, 2.f });
@@ -569,7 +571,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What] I need to calculate the inverse of a 3x3 matrix.
 	//      [Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestSingular3x3)
+	TEST(MatrixTransformTest, TestInverseSingular3x3)
 	{
 
 		// Given
@@ -583,7 +585,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What] I need to calculate the inverse of a 3x3 matrix.
 	//      [Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestPositiveDeterminant3x3)
+	TEST(MatrixTransformTest, TestInversePositiveDeterminant3x3)
 	{
 
 		// Given
@@ -605,7 +607,7 @@ namespace
 	//      [Who] As a 3DViewer programmer.
 	//      [What] I need to calculate the inverse of a 3x3 matrix.
 	//      [Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestNegativeDeterminant3x3)
+	TEST(MatrixTransformTest, TestInverseNegativeDeterminant3x3)
 	{
 		// Given
 		Matrix<float, 3> m1(std::array{ 1.f, 0.f, 3.f, 1.f, 0.f, 4.f, 2.f, 1.f, 0.f });
@@ -625,7 +627,7 @@ namespace
 	// [Who] As a 3DViewer programmer.
 	// [What] I need to calculate the inverse of a 4x4 matrix.
 	// [Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestSingular4x4)
+	TEST(MatrixTransformTest, TestInverseSingular4x4)
 	{
 		// Given
 		Matrix<float, 4> m1(std::array{ 1.f, 2.f, 3.f, 4.f, 1.f, 2.f, 3.f, 4.f, 9.f, 10.f, 11.f, 12.f, 13.f, 14.f, 15.f, 16.f });
@@ -638,7 +640,7 @@ namespace
 	// [Who] As a 3DViewer programmer.
 	// [What] I need to calculate the inverse of a 4x4 matrix.
 	// [Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestPositiveDeterminant4x4)
+	TEST(MatrixTransformTest, TestInversePositiveDeterminant4x4)
 	{
 		// Given
 		Matrix<float, 4> m1(std::array{ 1.f, 0.f, 3.f, 2.f, 2.f, 1.f, 0.f, 4.f, 1.f, 0.f, 4.f, 1.f, 2.f, 0.f, 2.f, 1.f });
@@ -658,7 +660,7 @@ namespace
 	// [Who] As a 3DViewer programmer.
 	// [What] I need to calculate the inverse of a 4x4 matrix.
 	// [Value] So that I can apply transformations to the matrix and have an option to undo them.
-	TEST(MatrixTransformTest, InverseTestNegativeDeterminant4x4)
+	TEST(MatrixTransformTest, TestInverseNegativeDeterminant4x4)
 	{
 		// Given
 		Matrix<float, 4> m1(std::array{ 1.f, 0.f, 3.f, 2.f, 2.f, 1.f, 0.f, 4.f, 1.f, 0.f, 4.f, 1.f, 2.f, 0.f, 2.f, 1.f });
@@ -675,3 +677,271 @@ namespace
 	}
 
 }
+
+namespace VectorTest
+{
+	using VML::Vector;
+
+	// Story:
+	//      [Who] As a programmer using the Vector class
+	//      [What] I want to create a new vector with default values
+	//      [Value] So that I can use it as a starting point for my calculations with unknown values.
+
+	TEST(VectorTest, TestDefaultConstructor) {
+		// Given
+		Vector<float, 4> v4;
+
+		// Then
+		for (auto i = 0; i < 4; ++i) {
+			EXPECT_FLOAT_EQ(v4[i], 0.f);
+		}
+	}
+
+	// Story:
+	//      [Who] As a programmer using the Vector class
+	//      [What] I want to create a new vector with values from an array
+	//      [Value] So that I can use it as a starting point for my calculations with values from an existing array.
+	TEST(VectorTest, TestArrayConstructor) {
+		// Given
+		std::array<float, 3> data = { 1.f, 2.f, 3.f };
+		Vector<float, 3> v3(data);
+
+		// Then
+		for (auto i = 0; i < 3; ++i) {
+			EXPECT_FLOAT_EQ(v3[i], data[i]);
+		}
+	}
+
+	// Story:
+	// [Who] As a user of the Vector class,
+	// [What] I need to test the [] operator
+	// [Value] So that I can ensure it returns a reference to the correct element in the vector
+	TEST(VectorTest, TestBracketOperator) {
+		// Given
+		Vector<int, 4> v4(std::array{ 1, 2, 3, 4 });
+
+		// Then
+		EXPECT_EQ(v4[0], 1);
+		EXPECT_EQ(v4[1], 2);
+		EXPECT_EQ(v4[2], 3);
+		EXPECT_EQ(v4[3], 4);
+
+		// When
+		v4[2] = 5;
+		v4[3] = 33;
+
+		// Then
+		EXPECT_EQ(v4[2], 5);
+		EXPECT_EQ(v4[3], 33);
+	}
+
+	// Story:
+	//      [Who] As a programmer using the Vector class
+	//      [What] I want to convert a vector to an array
+	//      [Value] So that I can use the array for other calculations or for storing the vector's values.
+	TEST(VectorTest, TestArrayConversion) {
+		// Given
+		Vector<float, 2> v2(std::array{ 1.f, 2.f });
+
+		// When
+		auto data = v2.toArray();
+
+		// Then
+		for (auto i = 0; i < 2; ++i) {
+			EXPECT_FLOAT_EQ(v2[i], data[i]);
+		}
+	}
+
+	// Story:
+	//      [Who] As a programmer using the Vector class
+	//      [What] I want to add two vectors together
+	//      [Value] So that I can combine their values for calculations.
+	TEST(VectorTest, TestAdditionOperator) {
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		Vector<float, 4> v42(std::array{ 1.f, 2.f, 3.f, 4.f });
+
+		// When
+		auto result = v41 + v42;
+
+		// Then
+		for (auto i = 0; i < 4; ++i) {
+			auto expectedValue = 2 * (i + 1);
+			EXPECT_FLOAT_EQ(result[i], expectedValue);
+		}
+	}
+
+	// Story:
+	//      [Who] As a developer using Vector class.
+	//      [What] I need to test the addition-assignment operator.
+	//      [Value] So I can ensure that it correctly adds the elements of two vectors and assigns the result to the left-hand side vector.
+	TEST(VectorTest, TestAdditionAssignmentOperator)
+	{
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		Vector<float, 4> v42(std::array{ 5.f, 6.f, 7.f, 8.f });
+
+		// When
+		v41 += v42;
+
+		// Then
+		EXPECT_FLOAT_EQ(v41[0], 6);
+		EXPECT_FLOAT_EQ(v41[1], 8);
+		EXPECT_FLOAT_EQ(v41[2], 10);
+		EXPECT_FLOAT_EQ(v41[3], 12);
+	}
+
+	// Story:
+	//      [Who] As a 3DViewer programmer.
+	//      [What] I need to subtract one vector from another.
+	//      [Value] So that I can use the result to translate a 3D model.
+	TEST(VectorTest, TestSubtractionOperator)
+	{
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		Vector<float, 4> v42(std::array{ 4.f, 3.f, 2.f, 1.f });
+		std::array expectedResult = std::array{ -3.f, -1.f, 1.f, 3.f };
+
+		auto result = v41 - v42;
+
+		// Then
+		for (auto i = 0; i < 4; ++i) {
+			EXPECT_FLOAT_EQ(result[i], expectedResult[i]);
+		}
+	}
+
+	// Story:
+	//      [Who] As a developer using Vector class.
+	//      [What] I need to test the subtraction-assignment operator.
+	//      [Value] So I can ensure that it correctly subtracts the elements of two vectors and assigns the result to the left-hand side vector.
+	TEST(VectorTest, TestSubtractionAssignmentOperator)
+	{
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		Vector<float, 4> v42(std::array{ 4.f, 3.f, 2.f, 1.f });
+		std::array expectedResult = std::array{ -3.f, -1.f, 1.f, 3.f };
+
+		// When
+		v41 -= v42;
+
+		// Then
+		for (auto i = 0; i < 4; ++i) {
+			EXPECT_FLOAT_EQ(v41[i], expectedResult[i]);
+		}
+	}
+
+	// Story:
+	// [Who] As a programmer, I need to use the multiplication operator on vectors
+	// [What] So that I can multiply the current vector by a given scalar value
+	// [Value] So that I can update the current vector's values and use it for further calculations
+	TEST(VectorTest, TestMultiplicationOperator)
+	{
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		float scalar = 2.f;
+
+		// When
+		Vector<float, 4> result = v41 * scalar;
+
+		// Then
+		EXPECT_FLOAT_EQ(result[0], 2);
+		EXPECT_FLOAT_EQ(result[1], 4);
+		EXPECT_FLOAT_EQ(result[2], 6);
+		EXPECT_FLOAT_EQ(result[3], 8);
+	}
+
+	// Story:
+	// [Who] As a programmer, I need to use the multiplication-assignment operator on vectors
+	// [What] So that I can multiply the current vector by a given scalar value
+	// [Value] So that I can update the current vector's values and use it for further calculations
+	TEST(VectorTest, TestMultiplicationAssignmentOperator)
+	{
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		float scalar = 2.f;
+
+		// When
+		v41 *= scalar;
+
+		// Then
+		EXPECT_FLOAT_EQ(v41[0], 2);
+		EXPECT_FLOAT_EQ(v41[1], 4);
+		EXPECT_FLOAT_EQ(v41[2], 6);
+		EXPECT_FLOAT_EQ(v41[3], 8);
+	}
+
+	// VectorTransform.hpp tests
+
+	TEST(VectorTransformTest, TestDotProduct) {
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		Vector<float, 4> v42(std::array{ 5.f, 6.f, 7.f, 8.f });
+		auto expectedDotProduct = 70.f;
+
+		// When
+		auto result = VML::dot(v41, v42);
+
+		// Then
+		EXPECT_FLOAT_EQ(result, expectedDotProduct);
+	}
+
+	// Story:
+	// [Who] As a computer graphics programmer.
+	// [What] I need to calculate the cross product of two 3-dimensional vectors.
+	// [Value] So that I can determine the normal vector of a triangle in 3D space.
+	TEST(VectorTransformTest, TestCrossProduct)
+	{
+		// Given
+		Vector<float, 3> v1(std::array{ 1.f, 2.f, 3.f });
+		Vector<float, 3> v2(std::array{ 4.f, 5.f, 6.f });
+
+		// When
+		Vector<float, 3> expectedResult(std::array{ -3.f, 6.f, -3.f });
+		auto result = VML::cross(v1, v2);
+
+		// Then
+		for (auto i = 0; i < 3; ++i)
+		{
+			EXPECT_FLOAT_EQ(expectedResult[i], result[i]);
+		}
+
+	}
+
+	// Story:
+	// [Who] As a 3D graphics programmer.
+	// [What] I want to normalize a Vector.
+	// [Value] So that I can ensure that the Vector has a length of 1 and can be used for 
+	TEST(VectorTransformTest, TestLength) {
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		auto expectedLength = std::sqrt(30);
+
+		// When
+		auto result = VML::length(v41);
+
+		// Then
+		EXPECT_FLOAT_EQ(result, expectedLength);
+	}
+
+	// Story:
+	// [Who] As a 3D graphics programmer.
+	// [What] I want to normalize a Vector.
+	// [Value] So that I can ensure that the Vector has a length of 1 and can be used for various calculations.
+	TEST(VectorTransformTest, TestNormalize)
+	{
+		// Given
+		Vector<float, 4> v41(std::array{ 1.f, 2.f, 3.f, 4.f });
+		auto expectedLength = std::sqrt(30);
+
+		// When
+		auto result = VML::normalize(v41);
+
+		// Then
+		for (auto i = 0; i < 4; ++i) {
+			EXPECT_FLOAT_EQ(result[i], v41[i] / expectedLength);
+		}
+	}
+
+
+}
+

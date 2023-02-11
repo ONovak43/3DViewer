@@ -6,9 +6,9 @@
 namespace VML
 {
 	// Integer matrices 
-	using mat2x2i = VML::Matrix<int, 2>;
-	using mat3x3i = VML::Matrix<int, 3>;
-	using mat4x4i = VML::Matrix<int, 4>;
+	using mat2x2i = VML::Matrix<int32_t, 2>;
+	using mat3x3i = VML::Matrix<int32_t, 3>;
+	using mat4x4i = VML::Matrix<int32_t, 4>;
 
 	// Float matrices
 	using mat2x2 = VML::Matrix<float, 2>;

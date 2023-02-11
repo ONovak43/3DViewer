@@ -29,7 +29,7 @@ namespace VML
 
 	// View matrices
 	template<typename T>
-	VML::Matrix<T, 4> lookAt(T fov, T aspect, T near, T far);
+	VML::Matrix<T, 4> lookAt(T position, T target, T upVector);
 
 	// Clip space
 	template<typename T>

@@ -15,28 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.hpp">
+    <ClInclude Include="src\Math\Matrix.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.inl">
+    <ClInclude Include="src\Math\Matrix.inl">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.hpp">
+    <ClInclude Include="src\Math\Vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.inl">
+    <ClInclude Include="src\Math\Vector.inl">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrices.hpp">
+    <ClInclude Include="src\Math\Matrices.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vectors.hpp">
+    <ClInclude Include="src\Math\Vectors.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MatrixTransform.hpp">
+    <ClInclude Include="src\Math\MatrixTransform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorTransform.hpp">
+    <ClInclude Include="src\Math\VectorTransform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -46,10 +46,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MatrixTransform.inl">
+    <None Include="src\Math\MatrixTransform.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="VectorTransform.inl">
+    <None Include="src\Math\VectorTransform.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

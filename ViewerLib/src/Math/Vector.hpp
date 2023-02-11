@@ -13,8 +13,8 @@ namespace VML
 	*
 	* This class is used to represent a 4D vector in a homogeneous coordinate system.
 	*
-	* @tparam T Type of the vector elements (float, double or int)
-	* @tparam S Size of vector (int)
+	* @tparam T Type of the vector elements (float, double or int32_t)
+	* @tparam S Size of vector (int32_t)
 	*/
 	template <class T, std::size_t S>
 	class Vector
@@ -127,10 +127,10 @@ namespace VML
 	constexpr Vector<T, S>& operator*=(Vector<T, S>& lhs, float scalar);
 
 	// Explicit templates
-	template class Vector<int, 1>;
-	template class Vector<int, 2>;
-	template class Vector<int, 3>;
-	template class Vector<int, 4>;
+	template class Vector<int32_t, 1>;
+	template class Vector<int32_t, 2>;
+	template class Vector<int32_t, 3>;
+	template class Vector<int32_t, 4>;
 	template class Vector<float, 1>;
 	template class Vector<float, 2>;
 	template class Vector<float, 3>;

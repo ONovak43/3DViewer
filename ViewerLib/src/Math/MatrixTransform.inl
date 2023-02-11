@@ -165,7 +165,7 @@ VML::Matrix<T, 4> VML::inverse(const VML::Matrix<T, 4>& matrix)
 }
 
 template<typename T>
-VML::Matrix<T, 4> VML::lookAt(T fov, T aspect, T, T)
+VML::Matrix<T, 4> VML::lookAt(T position, T target, T upVector)
 {
 	return VML::Matrix<T, 4>();
 }

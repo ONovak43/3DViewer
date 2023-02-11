@@ -12,8 +12,8 @@ namespace VML
 	 *
 	 * This class is used to represent a square matrix.
 	 *
-	 * @tparam T Type of the matrix elements (float, double or int)
-	 * @tparam S Size of the square matrix (float, double or int)
+	 * @tparam T Type of the matrix elements (float, double or int32_t)
+	 * @tparam S Size of the square matrix (float, double or int32_t)
 	 */
 	template <class T, std::size_t S>
 	class Matrix
@@ -177,9 +177,9 @@ namespace VML
 	constexpr bool operator!=(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
 
 	// Explicit templates
-	template class Matrix<int, 2>;
-	template class Matrix<int, 3>;
-	template class Matrix<int, 4>;
+	template class Matrix<int32_t, 2>;
+	template class Matrix<int32_t, 3>;
+	template class Matrix<int32_t, 4>;
 	template class Matrix<float, 2>;
 	template class Matrix<float, 3>;
 	template class Matrix<float, 4>;
