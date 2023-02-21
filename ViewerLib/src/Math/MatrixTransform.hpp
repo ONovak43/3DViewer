@@ -2,41 +2,42 @@
 #include <cstddef>
 #include <math.h>
 #include "Matrix.hpp"
+#include "VectorTransform.hpp"
 
-namespace VML
+namespace VL
 {
 	// Matrix functions
 	template<typename T>
-	inline float determinant(const VML::Matrix<T, 2>& matrix);
+	float determinant(const VL::Matrix<T, 2>& matrix);
 
 	template<typename T>
-	float determinant(const VML::Matrix<T, 3>& matrix);
+	float determinant(const VL::Matrix<T, 3>& matrix);
 
 	template<typename T>
-	float determinant(const VML::Matrix<T, 4>& matrix);
+	float determinant(const VL::Matrix<T, 4>& matrix);
 
 	template<typename T, std::size_t S>
-	VML::Matrix<T, S> transpose(const VML::Matrix<T, S>& matrix);
+	VL::Matrix<T, S> transpose(const VL::Matrix<T, S>& matrix);
 
 	template<typename T>
-	VML::Matrix<T, 2> inverse(const VML::Matrix<T, 2>& matrix);
+	VL::Matrix<T, 2> inverse(const VL::Matrix<T, 2>& matrix);
 
 	template<typename T>
-	VML::Matrix<T, 3> inverse(const VML::Matrix<T, 3>& matrix);
+	VL::Matrix<T, 3> inverse(const VL::Matrix<T, 3>& matrix);
 
 	template<typename T>
-	VML::Matrix<T, 4> inverse(const VML::Matrix<T, 4>& matrix);
+	VL::Matrix<T, 4> inverse(const VL::Matrix<T, 4>& matrix);
 
 	// View matrices
 	template<typename T>
-	VML::Matrix<T, 4> lookAt(T position, T target, T upVector);
+	VL::Matrix<T, 4> lookAt(Vector<T, 3> position, Vector<T, 3> target, Vector<T, 3> upVector);
 
 	// Clip space
 	template<typename T>
-	VML::Matrix<T, 4> ortho(T left, T right, T bottom, T top, T near, T far);
+	VL::Matrix<T, 4> ortho(T left, T right, T bottom, T top, T near, T far);
 
 	template<typename T>
-	VML::Matrix<T, 4> perspective(T fov, T aspect, T near, T far);
+	VL::Matrix<T, 4> perspective(T fov, T aspect, T near, T far);
 }
 
 #include "MatrixTransform.inl"

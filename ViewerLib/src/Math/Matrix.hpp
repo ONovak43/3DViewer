@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <iostream>
 
-namespace VML
+namespace VL
 {
 	/**
 	 * @class Matrix
@@ -29,7 +29,7 @@ namespace VML
 
 		/**
 		 * @brief Constructor
-		 * Initializes the matrix a given value on the diagonal
+		 * Initializes the matrix with a given value on the diagonal
 		 * @param value Value of type T to set on the diagonal
 		 */
 		constexpr explicit Matrix(T value);
@@ -138,7 +138,7 @@ namespace VML
 	* @return New matrix representing the result of the multiplication
 	*/
 	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator*(const VML::Matrix<T, S>& matrix, float scale);
+	constexpr Matrix<T, S> operator*(const VL::Matrix<T, S>& matrix, float scale);
 
 	/** 
 	* @brief Overloaded operator for matrix multiplication
@@ -156,7 +156,7 @@ namespace VML
 	* @return New matrix representing the result of the multiplication
 	*/
 	template <typename T, std::size_t S>
-	constexpr Matrix<T, S>& operator*=(VML::Matrix<T, S>& matrix, float scale);
+	constexpr Matrix<T, S>& operator*=(VL::Matrix<T, S>& matrix, float scale);
 
 	/**
 	 * @brief Overloaded operator for matrix comparison
