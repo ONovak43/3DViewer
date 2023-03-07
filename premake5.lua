@@ -1,7 +1,7 @@
 include "dependencies.lua"
 
 workspace "3DViewer"
-	startproject "ViewerLibTest"
+	startproject "ViewerApp"
 	architecture "x64"
 
 	configurations 
@@ -19,6 +19,7 @@ group ""
 
 group "Core"
 	include "ViewerLib"
+	include "ViewerApp"
 group ""
 
 group "Tests"

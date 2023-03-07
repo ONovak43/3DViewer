@@ -6,7 +6,8 @@ project "Premake"
 
 	files
 	{
-		"%{wks.location}/**premake5.lua"
+		"%{wks.location}/**premake5.lua",
+		"%{wks.location}/dependencies.lua"
 	}
 
 	postbuildcommands

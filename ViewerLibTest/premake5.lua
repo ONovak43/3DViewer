@@ -6,10 +6,15 @@ project "ViewerLibTest"
 	targetdir ("%{wks.location}/bin/".. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 
+	pchheader "pch.hpp"
+	pchsource "pch.cpp"
+
 	files
 	{
 		"tests/**.cpp",
-		"main.cpp"
+		"main.cpp",
+		"pch.cpp",
+		"pch.hpp"
 	}
 
 	includedirs
