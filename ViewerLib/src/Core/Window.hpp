@@ -37,7 +37,7 @@ namespace VL
 		Window& operator=(Window&) = delete;
 		Window& operator=(Window&&) noexcept = delete;
 
-		ERROR_CODE create(const WindowProperties& props, Renderer& renderer, EventManager& eventManager);
+		ERROR_CODE create(const WindowProperties& props, Renderer& renderer, IEventManager& eventManager);
 		ERROR_CODE update(Renderer& renderer);
 
 		[[nodiscard]] uint32_t getWidth() const;

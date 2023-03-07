@@ -6,7 +6,7 @@ namespace VL
 	class Window::Impl
 	{
 	public:
-		void setCallbacks(EventManager& eventManager);
+		void setCallbacks(IEventManager& eventManager);
 	public:
 		static Window* instancePtr;
 		GLFWwindow* window = nullptr;
@@ -16,11 +16,11 @@ namespace VL
 	Window* Window::Impl::instancePtr = nullptr;
 
 	void closeWindowCallback(GLFWwindow* window) {
-		auto eventManager = static_cast<EventManager*>(glfwGetWindowUserPointer(window));
-		eventManager->notify(EventManager::EVENT_TYPE::WINDOW_CLOSE, std::make_shared<WindowCloseEvent>());
+		auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+		eventManager->notify(IEventManager::EVENT_TYPE::WINDOW_CLOSE, std::make_shared<WindowCloseEvent>());
 	}
 
-	void Window::Impl::setCallbacks(EventManager& eventManager) {
+	void Window::Impl::setCallbacks(IEventManager& eventManager) {
 		glfwSetWindowUserPointer(window, &eventManager);
 		glfwSetWindowCloseCallback(window, closeWindowCallback);
 	}
@@ -40,7 +40,7 @@ namespace VL
 		glfwTerminate();
 	}
 
-	Window::ERROR_CODE Window::create(const WindowProperties& props, Renderer& renderer, EventManager& eventManager)
+	Window::ERROR_CODE Window::create(const WindowProperties& props, Renderer& renderer, IEventManager& eventManager)
 	{
 		ASSERT(_impl->window == nullptr, "The window is already instantiated.");
 
