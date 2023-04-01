@@ -10,7 +10,11 @@
 #include <string>
 
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "Math/Matrix.hpp"
 #include "Math/MatrixTransform.hpp"
 #include "Math/Vector.hpp"
 #include "Math/VectorTransform.hpp"
+#include "Event/Event.hpp"
+#include "Event/EventManager.hpp"
+#include "Memory/StackAllocator.hpp"

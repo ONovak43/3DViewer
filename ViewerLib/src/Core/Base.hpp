@@ -28,3 +28,5 @@
 #else
 	#define ASSERT(expr) // evaluates to nothing
 #endif
+
+#define STACK_ALLOCATOR_SIZE 2048

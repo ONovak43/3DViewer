@@ -4,23 +4,23 @@
 namespace VL
 {
 	using createCallback = std::function<std::unique_ptr<IRenderer>()>;
-	std::map<std::string, createCallback> RendererAPI::_renderers = {};
+	std::map<std::string, createCallback> RendererAPI::m_renderers = {};
 
 	void RendererAPI::registerRenderer(const std::string& type, createCallback cb)
 	{
-		_renderers[type] = cb;
+		m_renderers[type] = cb;
 	}
 
 	void RendererAPI::unregisterRenderer(const std::string& type)
 	{
-		_renderers.erase(type);
+		m_renderers.erase(type);
 	}
 
 	std::unique_ptr<IRenderer> RendererAPI::createRenderer(const std::string& type)
 	{
-		auto rendererIt = _renderers.find(type);
+		auto rendererIt = m_renderers.find(type);
 
-		if (rendererIt != _renderers.end()) {
+		if (rendererIt != m_renderers.end()) {
 			return rendererIt->second();
 		}
 		

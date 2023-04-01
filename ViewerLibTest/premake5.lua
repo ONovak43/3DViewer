@@ -2,7 +2,7 @@ project "ViewerLibTest"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
-	staticruntime "on"
+	staticruntime "off"
 	targetdir ("%{wks.location}/bin/".. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 
@@ -21,17 +21,21 @@ project "ViewerLibTest"
 	{
 		"%{wks.location}/ViewerLib/src",
 		"%{IncludeDir.gtest}",
+		"%{IncludeDir.gmock}",
 	}
 
 	links
 	{
 		"ViewerLib",
-		"gtest"
+		"gtest",
+		"gmock",
+		"glad"
 	}
 
 	libdirs 
 	{
-		"%{LibraryDir.gtest}"
+		"%{LibraryDir.gtest}",
+		"%{LibraryDir.gmock}"
 	}
 
 	filter "system:windows"

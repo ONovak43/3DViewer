@@ -15,7 +15,7 @@ namespace VL
 
 	private:
 		using callbackMap = std::map<std::string, createCallback>;
-		static callbackMap _renderers;
+		static callbackMap m_renderers;
 	};
 }
 

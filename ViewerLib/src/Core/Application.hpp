@@ -2,8 +2,10 @@
 #include "Window.hpp"
 #include "Renderer/RendererAPI.hpp"
 #include "OpenGL/OpenGLRenderer.hpp"
-#include "Event/IEvent.hpp"
+#include "Event/Event.hpp"
 #include "Event/Events.hpp"
+#include "Client/Client.hpp"
+#include "Memory/StackAllocator.hpp"
 
 namespace VL 
 {
@@ -16,18 +18,24 @@ namespace VL
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) noexcept = delete;
 
-		int32_t run();
-		void close(std::shared_ptr<WindowCloseEvent> e);
-
 		static Application& getInstance() {
 			static Application instance;
 			return instance;
 		}
+
+		int32_t run();
+
+		void onClose(std::shared_ptr<WindowCloseEvent> e);
+		void onResize(std::shared_ptr<WindowResizeEvent> e);
+		void onKeyPress(std::shared_ptr<KeyPressEvent> e);
+		void setClient(std::shared_ptr<Client> client);
 	private:
+		using Clock = std::chrono::steady_clock;
+		using TimePoint = std::chrono::time_point<Clock, std::chrono::nanoseconds>;
 		Application();
 		~Application();
 		class Impl;
-		std::unique_ptr<Impl> _impl;
+		std::unique_ptr<Impl> m_impl;
 	};
 }
 

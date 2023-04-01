@@ -1,16 +1,47 @@
 #pragma once
-#include "IEvent.hpp"
+#include "Event.hpp"
+#include <cstdint>
+
 namespace VL
 {
 	class WindowCloseEvent :
-		public IEvent
+		public Event
 	{
 		public:
 			WindowCloseEvent() = default;
 	};
 
+	class WindowResizeEvent :
+		public Event
+	{
+	public:
+		WindowResizeEvent(uint32_t width, uint32_t height)
+			: m_width(width), m_height(height)
+		{
+		}
+
+		[[nodiscard]] inline uint32_t getWidth() const { return m_width; }
+		[[nodiscard]] inline uint32_t getHeight() const { return m_height; }
+	private:
+		uint32_t m_width;
+		uint32_t m_height;
+	};
+
+	class WindowMoveEvent
+		: public Event
+	{
+	public:
+		WindowMoveEvent(int32_t x, int32_t y)
+			: m_x(x), m_y(y)
+		{
+		}
+	private:
+		int32_t m_x;
+		int32_t m_y;
+	};
+
 	class KeyboardEvent :
-		public IEvent
+		public Event
 	{
 	public:
 		enum class KEY_CODES
@@ -139,14 +170,34 @@ namespace VL
 		};
 		public:
 			KeyboardEvent(KEY_CODES key)
-				: IEvent(), _keyCode(key)
+				: Event(), m_keyCode(key)
 			{
 			};
 			inline KEY_CODES getKeyCode() const 
 			{ 
-				return _keyCode; 
+				return m_keyCode; 
 			};
-		private:
-			KEY_CODES _keyCode = KEY_CODES::NONE;
+		protected:
+			KEY_CODES m_keyCode = KEY_CODES::NONE;
 	};	
+
+	class KeyPressEvent :
+		public KeyboardEvent
+	{
+	public:
+		KeyPressEvent(KEY_CODES key)
+			: KeyboardEvent(key)
+		{
+		}
+	};
+
+	class KeyReleaseEvent :
+		public KeyboardEvent
+	{
+	public:
+	KeyReleaseEvent(KEY_CODES key)
+			: KeyboardEvent(key)
+		{
+		}
+	};;
 }

@@ -91,6 +91,12 @@ namespace VL
 		 */
 		 MatrixData2D toArray() const;
 
+		 /**
+		 * @brief Conversion to raw array of values
+		 * @return Array of S*S values of type T representing the matrix
+		 */
+		T* data();
+
 	private:
 		/**
 		* The matrix data.

@@ -1,6 +1,5 @@
-#pragma once
-
-namespace VL {
+namespace VL 
+{
     template<typename T, std::size_t S>
     T dot(const Vector<T, S>& v1, const Vector<T, S>& v2)
     {

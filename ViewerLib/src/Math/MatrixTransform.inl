@@ -1,5 +1,3 @@
-#pragma once
-
 namespace VL {
 	template<typename T>
 	float determinant(const Matrix<T, 2>& matrix)

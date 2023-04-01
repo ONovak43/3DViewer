@@ -61,7 +61,7 @@ namespace VL
 		/**
 		* The vector data.
 		*/
-		VectorData _vData;
+		VectorData m_vData;
 	};
 
 	// Free functions

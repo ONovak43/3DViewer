@@ -8,41 +8,67 @@ namespace VL
 	public:
 		void setCallbacks(IEventManager& eventManager);
 	public:
-		static Window* instancePtr;
-		GLFWwindow* window = nullptr;
-		WindowProperties props = WindowProperties();
+		bool m_vSync = false;
+		static Window* m_instancePtr;
+		GLFWwindow* m_window = nullptr;
+		WindowProperties m_props = WindowProperties();
 	};
 
-	Window* Window::Impl::instancePtr = nullptr;
-
-	void closeWindowCallback(GLFWwindow* window) {
-		auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
-		eventManager->notify(IEventManager::EVENT_TYPE::WINDOW_CLOSE, std::make_shared<WindowCloseEvent>());
-	}
+	Window* Window::Impl::m_instancePtr = nullptr;
 
 	void Window::Impl::setCallbacks(IEventManager& eventManager) {
-		glfwSetWindowUserPointer(window, &eventManager);
-		glfwSetWindowCloseCallback(window, closeWindowCallback);
+		glfwSetWindowUserPointer(m_window, &eventManager);
+	
+		glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window) {
+			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+			eventManager->notify(IEventManager::EVENT_TYPE::WINDOW_CLOSE, std::make_shared<WindowCloseEvent>());
+		});
+
+		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
+			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+			eventManager->notify(IEventManager::EVENT_TYPE::WINDOW_RESIZE, std::make_shared<WindowResizeEvent>(width, height));
+		});
+
+		glfwSetWindowPosCallback(m_window, [](GLFWwindow* window, int x, int y) {
+			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+			eventManager->notify(IEventManager::EVENT_TYPE::WINDOW_MOVE, std::make_shared<WindowMoveEvent>(x, y));
+		});
+
+		glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+			auto keyCasted = static_cast<KeyboardEvent::KEY_CODES>(key);
+			switch (action) {
+			case GLFW_PRESS:
+				eventManager->notify(IEventManager::EVENT_TYPE::KEY_PRESSED, std::make_shared<KeyPressEvent>(keyCasted));
+				break;
+			case GLFW_RELEASE:
+				eventManager->notify(IEventManager::EVENT_TYPE::KEY_RELEASED, std::make_shared<KeyReleaseEvent>(keyCasted));
+				break;
+			/*case GLFW_REPEAT:
+				eventManager->notify(IEventManager::EVENT_TYPE::KEY_REPEAT, std::make_shared<KeyRepeatEvent>(key));
+				break;*/
+			}
+		});
 	}
 
 	Window::Window()
-		: _impl(std::make_unique<Window::Impl>())
+		: m_impl(std::make_unique<Window::Impl>())
 	{
-		ASSERT(_impl->instancePtr == nullptr, "The VL supports only one window.");
-		_impl->instancePtr = this;
+		ASSERT(m_impl->m_instancePtr == nullptr, "The VL supports only one window.");
+		m_impl->m_instancePtr = this;
 	}
 
 	Window::~Window()
 	{
-		glfwDestroyWindow(_impl->window);
-		_impl->window = nullptr;
-		_impl->instancePtr = nullptr;
+		glfwDestroyWindow(m_impl->m_window);
+		m_impl->m_window = nullptr;
+		m_impl->m_instancePtr = nullptr;
 		glfwTerminate();
 	}
 
 	Window::ERROR_CODE Window::create(const WindowProperties& props, Renderer& renderer, IEventManager& eventManager)
 	{
-		ASSERT(_impl->window == nullptr, "The window is already instantiated.");
+		ASSERT(m_impl->m_window == nullptr, "The window is already instantiated.");
 
 		if (glfwInit() == GLFW_FALSE) {
 			std::cerr << "GLFW_INIT FAILED\n";
@@ -53,7 +79,7 @@ namespace VL
 		
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-		_impl->window = glfwCreateWindow(
+		m_impl->m_window = glfwCreateWindow(
 			(int)props.width,
 			(int)props.height,
 			props.name.c_str(),
@@ -61,52 +87,58 @@ namespace VL
 			nullptr
 		);
 
-		if (!_impl->window)
+		if (!m_impl->m_window)
 		{
 			std::cerr << "WINDOW CREATION FAILED\n";
 			glfwTerminate();
 		}
 
-		renderer.setContext(_impl->window);
+		renderer.setContext(m_impl->m_window);
 
-		_impl->setCallbacks(eventManager);
+		m_impl->setCallbacks(eventManager);
 		return ERROR_CODE::NONE;
 	}
 
 	Window::ERROR_CODE Window::update(Renderer& renderer)
 	{
-		renderer.swapBuffers(_impl->window);
+		renderer.swapBuffers(m_impl->m_window);
 		glfwPollEvents();
-		return ERROR_CODE();
+		return ERROR_CODE::NONE;
 	}
 
 	uint32_t Window::getWidth() const
 	{
-		return _impl->props.width;
+		return m_impl->m_props.width;
 	}
 
 	void Window::setWidth(uint32_t width)
 	{
-		_impl->props.width = width;
+		m_impl->m_props.width = width;
 	}
 
 	uint32_t Window::getHeight() const
 	{
-		return _impl->props.height;
+		return m_impl->m_props.height;
 	}
 
 	void Window::setHeight(uint32_t height)
 	{
-		_impl->props.height = height;
+		m_impl->m_props.height = height;
 	}
 
 	GLFWwindow* Window::getContext()
 	{
-		return _impl->window;
+		return m_impl->m_window;
+	}
+
+	void Window::setVSync(bool enable)
+	{
+		glfwSwapInterval(enable);
+		m_impl->m_vSync = enable;
 	}
 
 	bool Window::shouldClose() const
 	{
-		return glfwWindowShouldClose(_impl->window);
+		return glfwWindowShouldClose(m_impl->m_window);
 	}
 }

@@ -48,11 +48,12 @@ namespace VL
 
 		[[nodiscard]] GLFWwindow* getContext();
 
+		void setVSync(bool enable = true);
 		bool shouldClose() const;
 
 	private:
 		class Impl;
-		std::unique_ptr<Impl> _impl;
+		std::unique_ptr<Impl> m_impl;
 	};
 }
 

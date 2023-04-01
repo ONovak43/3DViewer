@@ -1,6 +1,6 @@
-#pragma once
-
-namespace VL {
+#include "Matrix.hpp"
+namespace VL
+{
 	template<typename T, std::size_t S>
 	constexpr Matrix<T, S>::Matrix()
 		: _mData1D{}
@@ -61,9 +61,15 @@ namespace VL {
 	}
 
 	template<class T, std::size_t S>
-	std::array<std::array<T, S>, S> Matrix<T, S>::toArray() const
+	inline std::array<std::array<T, S>, S> Matrix<T, S>::toArray() const
 	{
 		return _mData2D;
+	}
+
+	template<class T, std::size_t S>
+	inline T* Matrix<T, S>::data()
+	{
+		return reinterpret_cast<T*>(_mData2D.data());
 	}
 
 	template<typename T, std::size_t S>

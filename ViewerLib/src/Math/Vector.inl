@@ -1,9 +1,8 @@
-#pragma once
-
-namespace VL {
+namespace VL 
+{
 	template<class T, std::size_t S>
 	constexpr Vector<T, S>::Vector()
-		: _vData{}
+		: m_vData{}
 	{
 	}
 
@@ -12,26 +11,26 @@ namespace VL {
 		requires
 	std::is_same_v<std::remove_cvref_t<ArrayData>, std::array<T, S>>
 		constexpr Vector<T, S>::Vector(ArrayData&& values)
-		: _vData(std::forward<ArrayData>(values))
+		: m_vData(std::forward<ArrayData>(values))
 	{
-	};
+	}
 
 	template<class T, std::size_t S>
 	constexpr T& Vector<T, S>::operator[](std::size_t i)
 	{
-		return _vData[i];
+		return m_vData[i];
 	}
 
 	template<class T, std::size_t S>
 	constexpr const T& Vector<T, S>::operator[](std::size_t i) const
 	{
-		return _vData[i];
+		return m_vData[i];
 	}
 
 	template<class T, std::size_t S>
 	constexpr std::array<T, S> Vector<T, S>::toArray() const noexcept
 	{
-		return _vData;
+		return m_vData;
 	}
 
 	template <class T, std::size_t S>
