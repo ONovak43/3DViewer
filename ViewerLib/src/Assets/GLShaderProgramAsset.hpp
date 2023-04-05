@@ -1,6 +1,6 @@
 #pragma once
 #include "Asset.hpp"
-#include "OpenGL/OpenGLShaderProgram.hpp"
+#include "Renderer/OpenGL/OpenGLShaderProgram.hpp"
 
 namespace VL
 {

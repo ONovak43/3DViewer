@@ -1,16 +1,14 @@
 #pragma once
 #include "glad/glad.h"
 #include "OpenGLShader.hpp"
-#include "Renderer/Shader.hpp"
-#include "Math/Vectors.hpp"
-#include "Math/Matrices.hpp"
+#include "Renderer/IShaderProgram.hpp"
 
 namespace VL
 { 
 	namespace OpenGL
 	{
 		class OpenGLShaderProgram 
-			: public VL::Shader
+			: public VL::IShaderProgram
 		{
 		public:
 			explicit OpenGLShaderProgram(const std::string& filePath);
@@ -18,8 +16,8 @@ namespace VL
 			~OpenGLShaderProgram();
 
 			inline uint32_t getId() const { return m_id; }
-			void use() const;
-			void unuse() const;
+			void bind() const;
+			void unbind() const;
 
 			// Uniforms
 			void setInt(const std::string& name, int32_t value) override;

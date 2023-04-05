@@ -1,5 +1,9 @@
 #include "pch.hpp"
 #include "Application.hpp"
+#include "Renderer/RendererAPI.hpp"
+#include "Renderer/OpenGL/OpenGLRenderer.hpp"
+#include "Memory/StackAllocator.hpp"
+#include "GUI.hpp"
 
 namespace VL
 {
@@ -8,10 +12,11 @@ namespace VL
 	public:
 		bool m_running;
 		bool m_minimized;
+		std::shared_ptr<Client> m_client;
 		Window m_window;
 		Renderer m_renderer;
 		EventManager m_eventManager;
-		std::shared_ptr<Client> m_client;
+		GUI m_gui;		
 		
 	public:
 		Impl();
@@ -33,7 +38,8 @@ namespace VL
 		m_renderer(),
 		m_window(),
 		m_client(nullptr),
-		m_minimized(false)
+		m_minimized(false),
+		m_gui()
 	{
 	}
 
@@ -116,9 +122,15 @@ namespace VL
 			m_impl->m_renderer.clear();
 
 			m_impl->m_client->update(stackAllocator, time);
-			m_impl->m_window.update(m_impl->m_renderer);
-			
+
+			m_impl->m_gui.beginFrame();
+			m_impl->m_client->renderGUI();
+			m_impl->m_gui.endFrame();
+
+			// Clean up
+			m_impl->m_window.update(m_impl->m_renderer);			
 			stackAllocator.clear();
+
 		} while (m_impl->m_running);
 		return 0;
 	}
@@ -136,6 +148,8 @@ namespace VL
 
 		m_impl->m_window.setVSync(false);
 		m_impl->m_renderer.init();
+
+		m_impl->m_gui.create(m_impl->m_window);
 	}
 
 	Application::~Application()

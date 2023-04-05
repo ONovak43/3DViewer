@@ -3,15 +3,11 @@
 
 namespace VL
 {
-	class Buffer
+	class IBuffer
 	{
 	public:
-		Buffer() = default;
-		Buffer(const Buffer&) = delete;
-		Buffer(Buffer&&) noexcept = delete;
-		Buffer& operator=(const Buffer&) = delete;
-		Buffer& operator=(Buffer&&) noexcept = delete;
-		virtual ~Buffer() = default;
+		IBuffer() = default;
+		virtual ~IBuffer() = default;
 
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
@@ -28,14 +24,14 @@ namespace VL
 	};
 
 	class IVertexBuffer
-		: public Buffer
+		: public IBuffer
 	{
 	public:
 		virtual ~IVertexBuffer() = default;
 	};
 
 	class IIndexBuffer
-		: public Buffer
+		: public IBuffer
 	{
 	public:
 		virtual ~IIndexBuffer() = default;

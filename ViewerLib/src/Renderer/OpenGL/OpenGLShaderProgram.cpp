@@ -50,13 +50,13 @@ namespace VL
 			}
 		}
 
-		void OpenGLShaderProgram::use() const
+		void OpenGLShaderProgram::bind() const
 		{
 			ASSERT(m_id != 0, "Invalid shader program.");
 			glUseProgram(m_id);
 		}
 
-		void OpenGLShaderProgram::unuse() const
+		void OpenGLShaderProgram::unbind() const
 		{
 			glUseProgram(0);
 		}

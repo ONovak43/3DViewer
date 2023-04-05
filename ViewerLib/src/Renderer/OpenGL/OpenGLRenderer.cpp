@@ -1,5 +1,9 @@
 #include "pch.hpp"
 #include "OpenGLRenderer.hpp"
+#include "OpenGLShaderProgram.hpp"
+#include "OpenGLBuffer.hpp"
+#include "OpenGLTexture.hpp"
+#include "OpenGLVertexArray.hpp"
 
 namespace VL
 {
@@ -66,8 +70,72 @@ namespace VL
 
         void OpenGLRenderer::clear()
         {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | depthTesting | stencilTesting);
 		}
+
+        void OpenGLRenderer::enableDepthTesting()
+        {
+            glEnable(GL_DEPTH_TEST);
+            depthTesting = GL_DEPTH_BUFFER_BIT;
+        }
+
+        void OpenGLRenderer::disableDepthTesting()
+        {
+            glDisable(GL_DEPTH_TEST);
+            depthTesting = 0;
+        }
+
+        void OpenGLRenderer::enableStencilTesting()
+        {
+            glEnable(GL_STENCIL_TEST);
+            stencilTesting = GL_STENCIL_BUFFER_BIT;
+        }
+
+        void OpenGLRenderer::disableStencilTesting()
+        {
+            glDisable(GL_STENCIL_TEST);
+            stencilTesting = 0;
+        }
+
+        std::shared_ptr<IShaderProgram> OpenGLRenderer::createShaderProgram(const std::string& path)
+        {
+            return std::make_shared<OpenGLShaderProgram>(path);
+        }
+
+        std::shared_ptr<Shader> OpenGLRenderer::createShader(const std::string& name)
+        {
+            return std::make_shared<OpenGLShader>(name);
+        }
+
+        std::shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(uint32_t size)
+        {
+            return std::make_shared<OpenGLVertexBuffer>(size);
+        }
+
+        std::shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(const std::vector<float>& data)
+        {
+            return std::make_shared<OpenGLVertexBuffer>(data);
+        }
+
+        std::shared_ptr<IIndexBuffer> OpenGLRenderer::createIndexBuffer(const std::vector<uint32_t>& data)
+        {
+            return std::make_shared<OpenGLIndexBuffer>(data);
+        }
+
+        std::shared_ptr<VertexArray> OpenGLRenderer::createVertexArray()
+        {
+            return std::make_shared<OpenGLVertexArray>();
+        }
+
+        std::shared_ptr<ITexture> OpenGLRenderer::createTexture(uint32_t width, uint32_t height, TEXTURE_TYPE type)
+        {
+            return std::make_shared<OpenGLTexture>(width, height, type);
+        }
+
+        std::shared_ptr<ITexture> OpenGLRenderer::createTexture(const std::string& path, TEXTURE_TYPE type)
+        {
+            return std::make_shared<OpenGLTexture>(path, type);
+        }
 
 		void GLAPIENTRY onOpenGLMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 		{

@@ -14,6 +14,7 @@ project "ViewerLib"
 		"src/**.cpp",
 		"src/**.hpp",
 		"src/**.inl",
+		"vendor/lodepng/lodepng.cpp",
 	}
 
 	defines
@@ -26,13 +27,16 @@ project "ViewerLib"
 	{
 		"src",
 		"%{IncludeDir.glfw}",
-		"%{IncludeDir.glad}"
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.lodepng}",
+		"%{IncludeDir.imgui}"
 	}
 
 	links
 	{
 		"glfw3",
 		"glad",
+		"imgui",
 		"opengl32.lib"
 	}
 
@@ -48,9 +52,13 @@ project "ViewerLib"
 		defines "_DEBUG"
 		runtime "Debug"
 		symbols "on"
-
 			
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
 		optimize "on"
+
+	filter "files:vendor/lodepng/lodepng.cpp"
+		flags { "NoPCH" }
+	
+		

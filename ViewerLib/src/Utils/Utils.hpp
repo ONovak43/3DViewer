@@ -1,8 +1,11 @@
 #pragma once
 
 #include <fstream>
-#include <string>
 #include <type_traits>
+
+#include "Image.hpp"
+#include "lodepng.h"
+
 
 namespace VL
 {
@@ -14,6 +17,7 @@ namespace VL
         }
 
         std::string readFile(const std::string& path);
+        std::shared_ptr<Image> loadImage(const std::string& path);
     }
 }
 

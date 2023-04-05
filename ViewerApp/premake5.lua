@@ -24,12 +24,15 @@ project "ViewerApp"
 		"src",
 		"%{IncludeDir.viewerLib}",
 		"%{IncludeDir.glfw}",
-		"%{IncludeDir.glad}"
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.lodepng}",
+		"%{IncludeDir.imgui}"
 	}
 
 	links
 	{
 		"ViewerLib",
+		"imgui"
 	}
 
 	filter "system:windows"

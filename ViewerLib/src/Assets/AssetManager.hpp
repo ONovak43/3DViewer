@@ -1,10 +1,11 @@
 #pragma once
-#include "GLShaderAsset.hpp"
 #include "TextAsset.hpp"
+#include "ImageAsset.hpp"
+#include "GLShaderAsset.hpp"
 #include "GLShaderProgramAsset.hpp"
 
-#include "OpenGL/OpenGLShader.hpp"
-#include "OpenGL/OpenGLShaderProgram.hpp"
+#include "Renderer/OpenGL/OpenGLShader.hpp"
+#include "Renderer/OpenGL/OpenGLShaderProgram.hpp"
 
 
 namespace VL
@@ -23,6 +24,16 @@ namespace VL
 		AssetManager& operator=(const AssetManager&) = delete;
 		AssetManager& operator=(AssetManager&&) noexcept = delete;
 
+		inline std::shared_ptr<std::string> getTextAsset(const std::string& name)
+		{
+			return m_textAssets.getAsset(name);
+		}
+
+		inline std::shared_ptr<VL::Utils::Image> getImageAsset(const std::string& name)
+		{
+			return m_imageAssets.getAsset(name);
+		}
+
 		inline std::shared_ptr<VL::OpenGL::OpenGLShader> getShader(const std::string& name)
 		{
 			return m_shaderAssets.getAsset(name);
@@ -33,15 +44,12 @@ namespace VL
 			return m_shaderProgramAssets.getAsset(name);
 		}
 
-		inline std::shared_ptr<std::string> getTextAsset(const std::string& name)
-		{
-			return m_textAssets.getAsset(name);
-		}
 	private:
 		AssetManager();
 		~AssetManager();
+		TextAsset m_textAssets;
+		ImageAsset m_imageAssets;
 		GLShaderAsset m_shaderAssets;
 		GLShaderProgramAsset m_shaderProgramAssets;
-		TextAsset m_textAssets;
 	};
 }

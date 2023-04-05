@@ -17,6 +17,7 @@ namespace VL
 		virtual ~Client() = default;
 		virtual void start() = 0;
 		virtual void update(StackAllocator<STACK_ALLOCATOR_SIZE>& stackAllocator, float deltaTime) = 0;
+		virtual void renderGUI() = 0;
 		virtual void stop() = 0;
 		virtual void onKeyEvent(std::shared_ptr<KeyPressEvent>& e) = 0;
 	};
