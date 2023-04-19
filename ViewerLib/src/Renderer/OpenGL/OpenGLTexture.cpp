@@ -7,24 +7,25 @@ namespace VL
 	namespace OpenGL
 	{
 		OpenGLTexture::OpenGLTexture(const std::string& path, TEXTURE_TYPE type)
-			: VL::ITexture(), m_type(GL_TEXTURE_2D), m_width(0), m_height(0)
+			: VL::ITexture(), m_type(GL_TEXTURE_2D), m_width(0), m_height(0), m_id(0)
 		{
 			ASSERT(type == TEXTURE_TYPE::TEXTURE_2D, "Only 2D textures are supported for now");
-			auto image = AssetManager::getInstance().getImageAsset(path);
+			auto image = AssetManager::getInstance().getImageAsset(path); // Problem
 
 			if (image == nullptr)
 			{
 				std::cerr << "Failed to load texture: " << path << "\n";
 				return;
 			}
+			createTexture();
 
 			bind();
-			createTexture();
 			glTexImage2D(m_type, 0, GL_RGBA, 
 				static_cast<int32_t>(image->width), 
 				static_cast<int32_t>(image->height), 
 				0, GL_RGBA, GL_UNSIGNED_BYTE, 
-				image->data.data());
+				image->data.data()
+			);
 			unbind();
 		}
 

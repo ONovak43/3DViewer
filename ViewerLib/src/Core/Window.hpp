@@ -1,11 +1,10 @@
 #pragma once
 #include "pch.hpp"
-#include "Renderer/Renderer.hpp"
-#include "Event/EventManager.hpp"
-#include <Event/Events.hpp>
 
 namespace VL
 {
+	class Renderer;
+	class IEventManager;
 	struct WindowProperties
 	{
 		uint32_t width;

@@ -26,13 +26,21 @@ project "ViewerApp"
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.lodepng}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.assimp}"
 	}
 
 	links
 	{
 		"ViewerLib",
-		"imgui"
+		"imgui",
+		"assimp"
+	}
+
+	
+	libdirs 
+	{
+		"%{LibraryDir.assimp}"
 	}
 
 	filter "system:windows"

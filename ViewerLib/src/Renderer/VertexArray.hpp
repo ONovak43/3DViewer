@@ -32,11 +32,11 @@ namespace VL
 		VertexAttribute(uint32_t count, Type type, uint32_t offset, uint32_t size = 0);
 	};
 
-	class VertexArray
+	class IVertexArray
 	{
 	public:
-		VertexArray() = default;
-		virtual ~VertexArray() = default;
+		IVertexArray() = default;
+		virtual ~IVertexArray() = default;
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;		
 		virtual void setVertexBuffer(const std::shared_ptr<VL::IVertexBuffer>& buffer) = 0;

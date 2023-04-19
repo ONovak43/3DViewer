@@ -1,5 +1,8 @@
 #include "pch.hpp"
 #include "Utils.hpp"
+#include "lodepng.h"
+#include "Math/Vectors.hpp"
+#include "Core/Application.hpp"
 
 namespace VL
 {

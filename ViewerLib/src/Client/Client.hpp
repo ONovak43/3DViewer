@@ -1,6 +1,8 @@
 #pragma once
 #include "Event/Events.hpp"
 #include "Memory/StackAllocator.hpp"
+#include "Renderer/Renderer.hpp"
+
 #include <memory>
 
 namespace VL
@@ -20,5 +22,6 @@ namespace VL
 		virtual void renderGUI() = 0;
 		virtual void stop() = 0;
 		virtual void onKeyEvent(std::shared_ptr<KeyPressEvent>& e) = 0;
+		virtual void setRenderer(Renderer* renderer) = 0;
 	};
 }

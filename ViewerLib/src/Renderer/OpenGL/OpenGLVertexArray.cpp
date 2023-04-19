@@ -22,6 +22,7 @@ namespace VL
 		void OpenGLVertexArray::bind() const
 		{
 			glBindVertexArray(m_id);
+
 			if (m_vertexBuffer) {
 				m_vertexBuffer->bind();
 			}

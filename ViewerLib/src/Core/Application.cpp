@@ -1,8 +1,10 @@
 #include "pch.hpp"
 #include "Application.hpp"
+#include "Window.hpp"
 #include "Renderer/RendererAPI.hpp"
 #include "Renderer/OpenGL/OpenGLRenderer.hpp"
 #include "Memory/StackAllocator.hpp"
+#include "Event/EventManager.hpp"
 #include "GUI.hpp"
 
 namespace VL
@@ -16,7 +18,7 @@ namespace VL
 		Window m_window;
 		Renderer m_renderer;
 		EventManager m_eventManager;
-		GUI m_gui;		
+		GUI m_gui;
 		
 	public:
 		Impl();
@@ -98,7 +100,12 @@ namespace VL
 	void Application::setClient(std::shared_ptr<Client> client)
 	{
 		m_impl->m_client = client;
-		
+		m_impl->m_client->setRenderer(&(m_impl->m_renderer));
+	}
+
+	Renderer* Application::getRenderer()
+	{
+		return &m_impl->m_renderer;
 	}
 
 	int32_t Application::run()

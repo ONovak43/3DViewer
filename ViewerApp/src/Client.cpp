@@ -1,51 +1,46 @@
 #include "Client.hpp"
 #include "imgui.h"
+#include "ObjectLoader.hpp"
+#include "Scene/Vertex.hpp"
+#include "Math/MatrixTransform.hpp"
 
 #include <filesystem>
-
 
 void Viewer::start()
 {
     using VL::AssetManager;
-    using namespace std::filesystem;
-    auto path = current_path();
-    auto assets = path / "assets/Shader/main";
-    std::string s{ assets.generic_string() };
+    auto path = std::filesystem::current_path();
+    auto shaderPath = path / "assets/Shader/main";
+    auto objPath = path / "assets/Objects/test.obj";
 
-    auto _program = AssetManager::getInstance().getShaderProgram(s);
+    std::string shaderAsset{ shaderPath.generic_string() };
+    std::string objAsset{ objPath.generic_string() };
+
+    auto _program = AssetManager::getInstance().getShaderProgram(shaderAsset);
     m_program = std::move(_program);
-
-    std::vector<float> vertices = {
-     0.5f,  0.5f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
-    };
-    std::vector <uint32_t> indices = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
-    };
-
-    std::vector<VL::VertexAttribute> vertexAttributes = {
-        VL::VertexAttribute(3, VL::VertexAttribute::Type::FLOAT, 0),
-    };
-
-
-    m_vertexArray = std::make_unique<VL::OpenGL::OpenGLVertexArray>();
-    m_vertexBuffer = std::make_shared<VL::OpenGL::OpenGLVertexBuffer>(vertices);
-    m_indexBuffer = std::make_shared <VL::OpenGL::OpenGLIndexBuffer>(indices);
-    auto attributes = VL::VertexAttribute(3, VL::VertexAttribute::Type::FLOAT, 0);
-
-    m_vertexArray->setVertexBuffer(m_vertexBuffer);
-    m_vertexArray->setIndexBuffer(m_indexBuffer);
-    m_vertexArray->addVertexAtributes(vertexAttributes);
+    m_modelRenderer = std::make_unique<ModelRenderer>(objAsset, m_renderer);
 }
 
 void Viewer::update(VL::StackAllocator<STACK_ALLOCATOR_SIZE>& stackAllocator, float deltaTime)
 {
     m_program->bind();
-    m_vertexArray->bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    auto camPosition = VL::vec3(std::array{ 0.0f, 0.0f, 1.0f });
+    auto camFront = VL::vec3(std::array{ 0.0f, 0.0f, -1.0f });
+    auto worldUp = VL::vec3(std::array{ 0.0f, 1.0f, 0.0f });
+
+    auto projectionMatrix = VL::perspective(1.57079633f, 800.f/600.f, 0.1f, 1000.0f); // EDIT
+    auto viewMatrix = VL::lookAt(camPosition, camFront, worldUp);
+    auto model = VL::mat4(1.0f);
+
+    model = VL::translate(model, VL::vec3(std::array{ 0.0f, 0.0f, -30.0f }));
+    model = VL::scale(model, VL::vec3(std::array{ 1.f, 1.f, 1.f }));
+    
+    m_program->setMat4("projection", projectionMatrix);
+    m_program->setMat4("view", viewMatrix);
+    m_program->setMat4("model", model);
+
+    m_modelRenderer->draw(m_program);
+
     m_program->unbind();
 }
 
@@ -53,35 +48,19 @@ void Viewer::renderGUI()
 {
     bool my_tool_active = false;
     float my_color[4] = { 1.0f, 1.0f, 0.4f, 1.0f };
-    ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_MenuBar);
-    if (ImGui::BeginMenuBar())
+
+    if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-            if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
-            if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
+            if (ImGui::MenuItem("Load", "CTRL+L")) {}
+            if (ImGui::MenuItem("Export", "CTRL+S")) {}
+            ImGui::Separator();
+            if (ImGui::MenuItem("Exit", "CTRL+X")) {}
             ImGui::EndMenu();
         }
-        ImGui::EndMenuBar();
+        ImGui::EndMainMenuBar();
     }
-
-    // Edit a color stored as 4 floats
-    ImGui::ColorEdit4("Color", my_color);
-
-    // Generate samples and plot them
-    float samples[100];
-    for (int n = 0; n < 100; n++)
-        samples[n] = sinf(n * 0.2f + ImGui::GetTime() * 1.5f);
-    ImGui::PlotLines("Samples", samples, 100);
-
-    // Display contents in a scrolling region
-    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
-    ImGui::BeginChild("Scrolling");
-    for (int n = 0; n < 50; n++)
-        ImGui::Text("%04d: Some text", n);
-    ImGui::EndChild();
-    ImGui::End();
 }
 
 void Viewer::stop()
@@ -90,4 +69,9 @@ void Viewer::stop()
 
 void Viewer::onKeyEvent(std::shared_ptr<VL::KeyPressEvent>& e)
 {
+}
+
+void Viewer::setRenderer(VL::Renderer* renderer)
+{
+    m_renderer = renderer;
 }

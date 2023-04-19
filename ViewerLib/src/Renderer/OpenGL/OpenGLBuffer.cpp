@@ -43,7 +43,7 @@ namespace VL
 
         void OpenGLBuffer::setDynamicData(const void* data, uint32_t size)
         {
-            ASSERT(m_id == 0, "Writing data to an invalid buffer.");
+            ASSERT(m_id != 0, "Writing data to an invalid buffer.");
 
             bind();
             m_size = size;
@@ -52,7 +52,7 @@ namespace VL
 
         void OpenGLBuffer::setSubData(const void* data, uint32_t size, uint32_t offset, uint32_t bufferOffset)
         {
-            ASSERT(m_id == 0, "Writing data to an invalid buffer.");
+            ASSERT(m_id != 0, "Writing data to an invalid buffer.");
 
             bind();
             m_size = size;

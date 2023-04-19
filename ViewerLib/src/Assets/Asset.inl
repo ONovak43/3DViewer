@@ -10,8 +10,7 @@ namespace VL
 		}
 		else
 		{
-			auto asset = loadAsset(name);
-			m_assets[name] = std::move(asset);
+			m_assets[name] = loadAsset(name);
 			return m_assets[name];
 		}
 	}

@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Image.hpp"
+#include "Scene/Model.hpp"
+
 #include <fstream>
 #include <type_traits>
-
-#include "Image.hpp"
-#include "lodepng.h"
-
 
 namespace VL
 {

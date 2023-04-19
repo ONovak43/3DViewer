@@ -34,15 +34,16 @@ project "ViewerLib"
 
 	links
 	{
-		"glfw3",
 		"glad",
+		"glfw3",
 		"imgui",
 		"opengl32.lib"
 	}
 
 	libdirs 
 	{
-		"%{LibraryDir.glfw}"
+		"%{LibraryDir.glfw}",
+		"%{LibraryDir.assimp}"
 	}
 
 	filter "system:windows"

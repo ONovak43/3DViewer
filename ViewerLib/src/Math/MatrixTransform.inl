@@ -1,4 +1,6 @@
-namespace VL {
+#include "MatrixTransform.hpp"
+namespace VL
+{
 	template<typename T>
 	float determinant(const Matrix<T, 2>& matrix)
 	{
@@ -158,6 +160,41 @@ namespace VL {
 		result(3, 3) = +(matrix(0, 0) * s15 - matrix(0, 1) * s17 + matrix(0, 2) * s18);
 
 		result *= 1.f / det;
+
+		return result;
+	}
+
+	template<typename T>
+	VL::Matrix<T, 4> translate(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector)
+	{
+		auto result = matrix;
+
+		result(3, 0) = matrix[0] * vector[0] + matrix[4] * vector[1] + matrix[8] * vector[2] + matrix[12];
+		result(3, 1) = matrix[1] * vector[0] + matrix[5] * vector[1] + matrix[9] * vector[2] + matrix[13];
+		result(3, 2) = matrix[2] * vector[0] + matrix[6] * vector[1] + matrix[10] * vector[2] + matrix[14];
+		result(3, 3) = matrix[3] * vector[0] + matrix[7] * vector[1] + matrix[11] * vector[2] + matrix[15];
+
+		return result;
+	}
+
+	template<typename T>
+	VL::Matrix<T, 4> scale(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector)
+	{
+		VL::Matrix<T, 4> result = matrix;
+		result(0, 0) *= vector[0];
+		result(0, 1) *= vector[0];
+		result(0, 2) *= vector[0];
+		result(0, 3) *= vector[0];
+
+		result(1, 0) *= vector[1];
+		result(1, 1) *= vector[1];
+		result(1, 2) *= vector[1];
+		result(1, 3) *= vector[1];
+
+		result(2, 0) *= vector[2];
+		result(2, 1) *= vector[2];
+		result(2, 2) *= vector[2];
+		result(2, 3) *= vector[2];
 
 		return result;
 	}

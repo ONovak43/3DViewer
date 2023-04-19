@@ -18,8 +18,8 @@ namespace VL
 		virtual void setVec2(const std::string& name, vec2 value) = 0;
 		virtual void setVec3(const std::string& name, vec3 value) = 0;
 		virtual void setVec4(const std::string& name, vec4 value) = 0;
-		virtual void setMat3(const std::string& name, mat3 value, bool transpose) = 0;
-		virtual void setMat4(const std::string& name, mat4 value, bool transpose) = 0;
+		virtual void setMat3(const std::string& name, mat3 value, bool transpose = false) = 0;
+		virtual void setMat4(const std::string& name, mat4 value, bool transpose = false) = 0;
 
 	};
 }

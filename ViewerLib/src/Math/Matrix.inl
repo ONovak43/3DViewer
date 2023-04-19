@@ -1,4 +1,3 @@
-#include "Matrix.hpp"
 namespace VL
 {
 	template<typename T, std::size_t S>

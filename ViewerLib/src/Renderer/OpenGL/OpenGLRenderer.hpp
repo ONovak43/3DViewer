@@ -1,7 +1,7 @@
 #pragma once
 #include "Renderer/IRenderer.hpp"
 #include "Renderer/IShaderProgram.hpp"
-#include "Renderer/Shader.hpp"
+#include "Renderer/IShader.hpp"
 #include "Renderer/Texture.hpp"
 #include "Renderer/Buffer.hpp"
 #include "Renderer/VertexArray.hpp"
@@ -29,15 +29,15 @@ namespace VL
 			void disableStencilTesting() override;
 
 			std::shared_ptr<IShaderProgram> createShaderProgram(const std::string& path) override;
-			std::shared_ptr<Shader> createShader(const std::string& name) override;
+			std::shared_ptr<IShader> createShader(const std::string& name) override;
 
 			std::shared_ptr<IVertexBuffer> createVertexBuffer(uint32_t size) override;
 			std::shared_ptr<IVertexBuffer> createVertexBuffer(const std::vector<float>& data) override;
 			std::shared_ptr<IIndexBuffer> createIndexBuffer(const std::vector<uint32_t>& data) override;
-			std::shared_ptr<VertexArray> createVertexArray() override;
+			std::shared_ptr<IVertexArray> createVertexArray() override;
 
 			std::shared_ptr<ITexture> createTexture(uint32_t width, uint32_t height, TEXTURE_TYPE type) override;
-			std::shared_ptr<ITexture> createTexture(const std::string& path, TEXTURE_TYPE type) override;
+			std::shared_ptr<ITexture> loadTexture(const std::string& path, TEXTURE_TYPE type) override;
 
 		private:
 			uint32_t depthTesting = 0;

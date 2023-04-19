@@ -1,11 +1,15 @@
 #pragma once
-#include "Window.hpp"
 #include "Event/Event.hpp"
-#include "Event/Events.hpp"
 #include "Client/Client.hpp"
+#include "Renderer/Renderer.hpp"
+
+#include <chrono>
 
 namespace VL 
 {
+	class Window;
+	
+
 	class Application
 	{
 	public:
@@ -18,7 +22,7 @@ namespace VL
 		static Application& getInstance() {
 			static Application instance;
 			return instance;
-		}
+		};
 
 		int32_t run();
 
@@ -26,6 +30,8 @@ namespace VL
 		void onResize(std::shared_ptr<WindowResizeEvent> e);
 		void onKeyPress(std::shared_ptr<KeyPressEvent> e);
 		void setClient(std::shared_ptr<Client> client);
+		Renderer* getRenderer();
+
 	private:
 		using Clock = std::chrono::steady_clock;
 		using TimePoint = std::chrono::time_point<Clock, std::chrono::nanoseconds>;

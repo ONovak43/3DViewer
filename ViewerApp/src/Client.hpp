@@ -2,11 +2,11 @@
 #include "Core/Base.hpp"
 #include "Event/Events.hpp"
 #include "Assets/AssetManager.hpp"
-#include "Renderer/OpenGL/OpenGLBuffer.hpp"
 #include "Renderer/OpenGL/OpenGLShader.hpp"
-#include "Renderer/OpenGL/OpenGLShaderProgram.hpp"
-#include "Renderer/OpenGL/OpenGLVertexArray.hpp"
+#include "Renderer/IShaderProgram.hpp"
 #include "Memory/StackAllocator.hpp"
+#include "Renderer/Renderer.hpp"
+#include "ModelRenderer.hpp"
 #include <memory>
 
 class Viewer : public VL::Client
@@ -19,10 +19,13 @@ public:
 	void renderGUI() override;
 	void stop() override;
 	void onKeyEvent(std::shared_ptr<VL::KeyPressEvent>& e) override;
+	void setRenderer(VL::Renderer* renderer) override;
 
 private:
-	std::shared_ptr<VL::OpenGL::OpenGLShaderProgram> m_program;
-	std::unique_ptr<VL::OpenGL::OpenGLVertexArray> m_vertexArray;
-	std::shared_ptr<VL::OpenGL::OpenGLVertexBuffer> m_vertexBuffer;
-	std::shared_ptr<VL::OpenGL::OpenGLIndexBuffer> m_indexBuffer;
+	VL::Renderer* m_renderer;
+	std::unique_ptr<ModelRenderer> m_modelRenderer;
+	std::shared_ptr<VL::IShaderProgram> m_program;
+	unsigned int VBO, EBO;
+	unsigned int VAO;
+
 };

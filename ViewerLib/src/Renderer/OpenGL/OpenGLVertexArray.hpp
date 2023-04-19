@@ -8,7 +8,7 @@ namespace VL
 	namespace OpenGL
 	{
 		class OpenGLVertexArray
-			: public VL::VertexArray
+			: public VL::IVertexArray
 		{
 		public:
 			OpenGLVertexArray();

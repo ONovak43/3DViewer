@@ -24,8 +24,6 @@ namespace VL
 			std::unique_ptr<OpenGLTexture> m_colorBuffer = nullptr;
 			GLuint m_depthBuffer = 0;
         };
-
-        GLuint createDepthBuffer(uint32_t width, uint32_t height);
     }
 }
 

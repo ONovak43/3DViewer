@@ -1,5 +1,8 @@
 #include "pch.hpp"
 #include "Window.hpp"
+#include "Renderer/Renderer.hpp"
+#include "Event/EventManager.hpp"
+#include <Event/Events.hpp>
 
 namespace VL
 {

@@ -700,6 +700,88 @@ namespace MathTests
 			}
 		}
 
+		TEST(MatrixTransformTest, TestTranslateMatrixSuccess)
+		{
+			Matrix<float, 4> m1(std::array{ 1.f, 2.f, 3.f, 4.f,
+											5.f, 6.f, 7.f, 8.f, 
+											9.f, 10.f, 11.f, 12.f,
+											13.f, 14.f, 15.f, 16.f });
+
+			VL::Vector<float, 3> v(std::array{ 1.f, 2.f, 3.f });
+
+			auto result = VL::translate(m1, v);
+
+			VL::Matrix<float, 4> expectedResult(std::array{ 1.f, 2.f, 3.f, 4.f,
+															5.f, 6.f, 7.f, 8.f,
+															9.f, 10.f, 11.f, 12.f,
+															51.f, 58.f, 65.f, 72.f });
+			for (auto i = 0; i < 16; ++i)
+			{
+				EXPECT_FLOAT_EQ(expectedResult[i], result[i]);
+			}
+		}
+
+		TEST(MatrixTransformTest, TestTranslateMatrixZeroVector)
+		{
+			Matrix<float, 4> m1(std::array{ 1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f, 10.f, 11.f, 12.f, 13.f, 14.f, 15.f, 16.f });
+
+			auto result = VL::translate(m1, VL::Vector<float, 3>(std::array{ 0.f, 0.f, 0.f }));
+
+			for (auto i = 0; i < 16; ++i)
+			{
+				EXPECT_FLOAT_EQ(m1[i], result[i]);
+			}
+		}
+		TEST(MatrixTransformTest, TestTranslateMatrixZeroPosition)
+		{
+			Matrix<float, 4> m1(std::array{ 
+				1.f, 2.f, 3.f, 4.f,
+				5.f, 6.f, 7.f, 8.f,
+				9.f, 10.f, 11.f, 12.f,
+				13.f, 14.f, 15.f, 16.f });
+
+			VL::Vector<float, 3> v(std::array{ -1.f, -2.f, -3.f });
+
+			auto result = VL::translate(m1, v);
+
+			VL::Matrix<float, 4> expectedResult(std::array{ 
+				1.f, 2.f, 3.f, 4.f,
+				5.f, 6.f, 7.f, 8.f,
+				9.f, 10.f, 11.f, 12.f,
+				-25.f, -30.f, -35.f, -40.f 
+			});
+
+			for (auto i = 0; i < 16; ++i)
+			{
+				EXPECT_FLOAT_EQ(expectedResult[i], result[i]);
+			}
+		}
+
+		TEST(MatrixTransformTest, TestScale) 
+		{
+			VL::Matrix<float, 4> m1(std::array {
+				1.0f, 2.0f, 3.0f, 4.0f,
+				5.0f, 6.0f, 7.0f, 8.0f,
+				9.0f, 10.0f, 11.0f, 12.0f,
+				13.0f, 14.0f, 15.0f, 16.0f
+			});
+
+			VL::Vector<float, 3> v(std::array{ 2.f, 3.f, 4.f });
+
+			auto result = VL::scale(m1, v);
+
+			VL::Matrix<float, 4> expectedResult(std::array{
+				2.f, 4.f, 6.f, 8.f,
+				15.f, 18.f, 21.f, 24.f,
+				36.f, 40.f, 44.f, 48.f,
+				13.f, 14.f, 15.f, 16.f
+			});
+
+			for (int i = 0; i < 16; ++i) {
+				EXPECT_FLOAT_EQ(expectedResult[i], result[i]);
+			}
+		}
+
 	}
 
 	namespace VectorTest

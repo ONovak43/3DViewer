@@ -1,7 +1,25 @@
 #version 460 core
+
+in vec2 TexCoords;
+in vec3 FragPos;
+in vec3 Normal;
+
 out vec4 FragColor;
+
+uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_diffuse2;
+uniform sampler2D texture_diffuse3;
+uniform sampler2D texture_specular1;
+uniform sampler2D texture_specular2;
 
 void main()
 {
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-} 
+    vec4 diffuseColor1 = texture(texture_diffuse1, TexCoords);
+    vec4 diffuseColor2 = texture(texture_diffuse2, TexCoords);
+    vec4 diffuseColor3 = texture(texture_diffuse3, TexCoords);
+    vec4 specularColor1 = texture(texture_specular1, TexCoords);
+    vec4 specularColor2 = texture(texture_specular2, TexCoords);
+    
+    // use the texture colors to calculate the final fragment color
+    FragColor = vec4(diffuseColor1.rgb * diffuseColor2.rgb * diffuseColor3.rgb * specularColor1.rgb * specularColor2.rgb, 1.0f);
+}

@@ -1,11 +1,11 @@
 #pragma once
-#include "Renderer/Shader.hpp"
+#include "Renderer/IShader.hpp"
 namespace VL
 {
 	namespace OpenGL
 	{
 		class OpenGLShader
-			: public VL::Shader
+			: public VL::IShader
 		{
 		public:
 			explicit OpenGLShader(const std::string& name);

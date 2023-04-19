@@ -1,6 +1,8 @@
 #pragma once
 #include "IRenderer.hpp"
+
 #include <map>
+#include <functional>
 
 namespace VL
 {

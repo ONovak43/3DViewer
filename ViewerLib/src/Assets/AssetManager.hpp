@@ -3,6 +3,7 @@
 #include "ImageAsset.hpp"
 #include "GLShaderAsset.hpp"
 #include "GLShaderProgramAsset.hpp"
+#include "GLTextureAsset.hpp"
 
 #include "Renderer/OpenGL/OpenGLShader.hpp"
 #include "Renderer/OpenGL/OpenGLShaderProgram.hpp"
@@ -44,6 +45,11 @@ namespace VL
 			return m_shaderProgramAssets.getAsset(name);
 		}
 
+		inline std::shared_ptr<VL::OpenGL::OpenGLTexture> get2DTexture(const std::string& name)
+		{
+			return m_gl2DTextureAssets.getAsset(name);
+		}
+
 	private:
 		AssetManager();
 		~AssetManager();
@@ -51,5 +57,6 @@ namespace VL
 		ImageAsset m_imageAssets;
 		GLShaderAsset m_shaderAssets;
 		GLShaderProgramAsset m_shaderProgramAssets;
+		GL2DTextureAsset m_gl2DTextureAssets;
 	};
 }

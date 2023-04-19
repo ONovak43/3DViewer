@@ -6,6 +6,19 @@ namespace VL
 {
 	namespace OpenGL
 	{
+		namespace
+		{
+			GLuint createDepthBuffer(uint32_t width, uint32_t height)
+			{
+				GLuint id = 0;
+				glGenRenderbuffers(1, &id);
+				glBindRenderbuffer(GL_RENDERBUFFER, id);
+				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+				glBindRenderbuffer(GL_RENDERBUFFER, 0);
+				return id;
+			}
+		}
+
 		OpenGLFramebuffer::OpenGLFramebuffer(uint32_t width, uint32_t height, bool depthBuffer)
 		{
 			glGenFramebuffers(1, &m_id);
@@ -79,16 +92,6 @@ namespace VL
 				glClearStencil(stencil);
 				glClear(GL_STENCIL_BUFFER_BIT);
 			}
-		}
-
-		GLuint createDepthBuffer(uint32_t width, uint32_t height)
-		{
-			GLuint id = 0;
-			glGenRenderbuffers(1, &id);
-			glBindRenderbuffer(GL_RENDERBUFFER, id);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-			glBindRenderbuffer(GL_RENDERBUFFER, 0);
-			return id;
 		}
 	}
 }

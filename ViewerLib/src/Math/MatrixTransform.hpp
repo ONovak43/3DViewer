@@ -28,6 +28,12 @@ namespace VL
 	template<typename T>
 	VL::Matrix<T, 4> inverse(const VL::Matrix<T, 4>& matrix);
 
+	template<typename T>
+	VL::Matrix<T, 4> translate(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector);
+
+	template<typename T>
+	VL::Matrix<T, 4> scale(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector);
+
 	// View matrices
 	template<typename T>
 	VL::Matrix<T, 4> lookAt(Vector<T, 3> position, Vector<T, 3> target, Vector<T, 3> upVector);

@@ -24,12 +24,12 @@ namespace VL
 			void setUInt(const std::string& name, uint32_t value) override;
 			void setFloat(const std::string& name, float value) override;
 
-			void setVec2(const std::string& name, vec2 value);
-			void setVec3(const std::string& name, vec3 value);
-			void setVec4(const std::string& name, vec4 value);
+			void setVec2(const std::string& name, vec2 value) override;
+			void setVec3(const std::string& name, vec3 value) override;
+			void setVec4(const std::string& name, vec4 value) override;
 
-			virtual void setMat3(const std::string& name, mat3 value, bool transpose);
-			virtual void setMat4(const std::string& name, mat4 value, bool transpose) override;
+			void setMat3(const std::string& name, mat3 value, bool transpose = false) override;
+			void setMat4(const std::string& name, mat4 value, bool transpose = false) override;
 
 		private:
 			uint32_t m_id;

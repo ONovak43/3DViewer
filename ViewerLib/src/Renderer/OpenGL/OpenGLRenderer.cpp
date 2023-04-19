@@ -4,6 +4,7 @@
 #include "OpenGLBuffer.hpp"
 #include "OpenGLTexture.hpp"
 #include "OpenGLVertexArray.hpp"
+#include "Assets/AssetManager.hpp"
 
 namespace VL
 {
@@ -25,6 +26,7 @@ namespace VL
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_TEXTURE_2D);
         }
 
 		void OpenGLRenderer::setWindowHint()
@@ -102,7 +104,7 @@ namespace VL
             return std::make_shared<OpenGLShaderProgram>(path);
         }
 
-        std::shared_ptr<Shader> OpenGLRenderer::createShader(const std::string& name)
+        std::shared_ptr<IShader> OpenGLRenderer::createShader(const std::string& name)
         {
             return std::make_shared<OpenGLShader>(name);
         }
@@ -122,7 +124,7 @@ namespace VL
             return std::make_shared<OpenGLIndexBuffer>(data);
         }
 
-        std::shared_ptr<VertexArray> OpenGLRenderer::createVertexArray()
+        std::shared_ptr<IVertexArray> OpenGLRenderer::createVertexArray()
         {
             return std::make_shared<OpenGLVertexArray>();
         }
@@ -132,9 +134,16 @@ namespace VL
             return std::make_shared<OpenGLTexture>(width, height, type);
         }
 
-        std::shared_ptr<ITexture> OpenGLRenderer::createTexture(const std::string& path, TEXTURE_TYPE type)
+        std::shared_ptr<ITexture> OpenGLRenderer::loadTexture(const std::string& path, TEXTURE_TYPE type)
         {
-            return std::make_shared<OpenGLTexture>(path, type);
+            switch (type)
+            {
+            case TEXTURE_TYPE::TEXTURE_2D:
+                return AssetManager::getInstance().get2DTexture(path);
+            default:
+                std::cerr << "Texture type not supported.\n";
+                return nullptr;
+            }
         }
 
 		void GLAPIENTRY onOpenGLMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)

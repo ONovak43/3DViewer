@@ -1,4 +1,5 @@
-namespace VL 
+#include "Vector.hpp"
+namespace VL
 {
 	template<class T, std::size_t S>
 	constexpr Vector<T, S>::Vector()
