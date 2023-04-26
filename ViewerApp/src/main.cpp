@@ -1,5 +1,5 @@
 #include "Core/Application.hpp"
-#include "Client.hpp"
+#include "Viewer.hpp"
 #include "Memory/StackAllocator.hpp"
 
 int main()

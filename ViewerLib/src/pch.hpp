@@ -3,8 +3,7 @@
 #include "Core/Base.hpp"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "Math/Vectors.hpp"
-#include "Math/Matrices.hpp"
+#include "Math/Math.hpp"
 
 #include <algorithm>
 #include <any>

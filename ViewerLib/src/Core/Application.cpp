@@ -61,6 +61,11 @@ namespace VL
 			Application& app = Application::getInstance();
 			app.onKeyPress(std::dynamic_pointer_cast<KeyPressEvent>(e));
 		});
+
+		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_MOVED, [](std::shared_ptr<Event> e) {
+			Application& app = Application::getInstance();
+			app.onMouseMove(std::dynamic_pointer_cast<MouseMovedEvent>(e));
+		});
 	}
 
 	float Application::Impl::getDeltaTime()
@@ -91,10 +96,13 @@ namespace VL
 
 	void Application::onKeyPress(std::shared_ptr<KeyPressEvent> e)
 	{
-		auto key = e->getKeyCode();
-		if (key == KeyboardEvent::KEY_CODES::ESCAPE) {
-			m_impl->m_running = false;
-		}
+		
+	}
+
+	void Application::onMouseMove(std::shared_ptr<MouseMovedEvent> e)
+	{
+		auto x = e->getX();
+		auto y = e->getY();
 	}
 
 	void Application::setClient(std::shared_ptr<Client> client)
@@ -140,6 +148,12 @@ namespace VL
 
 		} while (m_impl->m_running);
 		return 0;
+	}
+
+	void Application::stop()
+	{
+		m_impl->m_running = false;
+		m_impl->m_client->stop();
 	}
 
 	Application::Application()

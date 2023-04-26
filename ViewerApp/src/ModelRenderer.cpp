@@ -3,7 +3,7 @@
 #include <string>
 
 ModelRenderer::ModelRenderer(const std::string& modelPath, VL::Renderer* renderer)
-    : m_renderer(renderer), m_vertexArray(), m_vertexBuffer(), m_indexBuffer()
+    : m_renderer(renderer), m_vertexArray()
 {
     ObjectLoader loader(m_renderer);
     m_model = loader.loadModel(modelPath);
@@ -24,7 +24,7 @@ void ModelRenderer::draw(std::shared_ptr<VL::IShaderProgram>& program)
 		prepareTextures(meshes, i, program);
 
 		m_vertexArray[i]->bind();
-		glDrawElements(GL_TRIANGLES, meshes[i].m_indices.size(), GL_UNSIGNED_INT, 0); // TODO: CREATE RENDERER IN LIBRARY!
+		glDrawElements(GL_TRIANGLES, static_cast<uint32_t>(meshes[i].m_indices.size()), GL_UNSIGNED_INT, nullptr); // TODO: CREATE RENDERER IN LIBRARY!
 		m_vertexArray[i]->unbind();
 	}
 }
@@ -32,6 +32,7 @@ void ModelRenderer::draw(std::shared_ptr<VL::IShaderProgram>& program)
 void ModelRenderer::prepareMesh(const VL::Mesh& mesh)
 {
     using Vertex = VL::Vertex1P1N1UV;
+
     std::vector<VL::VertexAttribute> vertexAttributes = {
         VL::VertexAttribute(3, VL::VertexAttribute::Type::FLOAT, 0, sizeof(Vertex)),
         VL::VertexAttribute(3, VL::VertexAttribute::Type::FLOAT, offsetof(Vertex, m_normal), sizeof(Vertex)),
@@ -39,17 +40,14 @@ void ModelRenderer::prepareMesh(const VL::Mesh& mesh)
     };
 
     auto VAO = m_renderer->createVertexArray();
-    auto VBO = m_renderer->createVertexBuffer(mesh.m_vertices.size() * sizeof(Vertex));
+    auto VBO = m_renderer->createVertexBuffer();
     VBO->setStaticData(mesh.m_vertices.data(), mesh.m_vertices.size() * sizeof(Vertex));
     auto EBO = m_renderer->createIndexBuffer(mesh.m_indices);
 
+    VAO->setVertexBuffer(VBO);
+    VAO->setIndexBuffer(EBO);
+    VAO->addVertexAtributes(vertexAttributes, 0);
     m_vertexArray.emplace_back(VAO);
-    m_vertexBuffer.emplace_back(VBO);
-    m_indexBuffer.emplace_back(EBO);
-
-    m_vertexArray.back()->setVertexBuffer(VBO);
-    m_vertexArray.back()->setIndexBuffer(EBO);
-    m_vertexArray.back()->addVertexAtributes(vertexAttributes, 0);
 }
 
 void ModelRenderer::prepareTextures(std::vector<VL::Mesh>& meshes, uint32_t meshId, std::shared_ptr<VL::IShaderProgram>& program)

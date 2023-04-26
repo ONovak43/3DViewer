@@ -2,13 +2,13 @@
 namespace VL
 {
 	template<typename T>
-	float determinant(const Matrix<T, 2>& matrix)
+	constexpr float determinant(const Matrix<T, 2>& matrix)
 	{
 		return static_cast<float>(matrix(0, 0) * matrix(1, 1) - matrix(0, 1) * matrix(1, 0));
 	}
 
 	template<typename T>
-	float determinant(const Matrix<T, 3>& matrix)
+	constexpr float determinant(const Matrix<T, 3>& matrix)
 	{
 		// Cramer's Rule is used for calculating the determinant 
 
@@ -21,7 +21,7 @@ namespace VL
 	}
 
 	template<typename T>
-	float determinant(const Matrix<T, 4>& matrix)
+	constexpr float determinant(const Matrix<T, 4>& matrix)
 	{
 		// Cramer's Rule is used for calculating the determinant 
 
@@ -43,7 +43,7 @@ namespace VL
 	}
 
 	template<typename T, std::size_t S>
-	Matrix<T, S> transpose(const Matrix<T, S>& matrix)
+	constexpr Matrix<T, S> transpose(const Matrix<T, S>& matrix)
 	{
 		Matrix<T, S> result;
 		for (auto i = 0; i < S; ++i) {
@@ -55,7 +55,7 @@ namespace VL
 	}
 
 	template<typename T>
-	Matrix<T, 2> inverse(const Matrix<T, 2>& matrix)
+	constexpr Matrix<T, 2> inverse(const Matrix<T, 2>& matrix)
 	{
 		auto det = determinant(matrix);
 
@@ -78,7 +78,7 @@ namespace VL
 	}
 
 	template<typename T>
-	Matrix<T, 3> inverse(const Matrix<T, 3>& matrix)
+	constexpr Matrix<T, 3> inverse(const Matrix<T, 3>& matrix)
 	{
 		auto det = determinant(matrix);
 
@@ -108,7 +108,7 @@ namespace VL
 	}
 
 	template<typename T>
-	Matrix<T, 4> inverse(const Matrix<T, 4>& matrix)
+	constexpr Matrix<T, 4> inverse(const Matrix<T, 4>& matrix)
 	{
 		auto det = determinant(matrix);
 
@@ -165,7 +165,7 @@ namespace VL
 	}
 
 	template<typename T>
-	VL::Matrix<T, 4> translate(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector)
+	constexpr VL::Matrix<T, 4> translate(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector)
 	{
 		auto result = matrix;
 
@@ -178,7 +178,7 @@ namespace VL
 	}
 
 	template<typename T>
-	VL::Matrix<T, 4> scale(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector)
+	constexpr VL::Matrix<T, 4> scale(const Matrix<T, 4>& matrix, const Vector<T, 3>& vector)
 	{
 		VL::Matrix<T, 4> result = matrix;
 		result(0, 0) *= vector[0];
@@ -200,36 +200,69 @@ namespace VL
 	}
 
 	template<typename T>
-	Matrix<T, 4> lookAt(Vector<T, 3> position, Vector<T, 3> target, Vector<T, 3> upVector)
+	constexpr VL::Matrix<T, 4> rotate(const Matrix<T, 4>& matrix, T angle, const Vector<T, 3>& vector)
 	{
-		// Gram-Schmidt process to get orthonormalized camera coordinates
-		auto d = normalize(position - target);
-		auto r = normalize(cross(d, upVector));
-		auto u = cross(r, d);
+		T c = std::cos(angle);
+		T s = std::sin(angle);
+		T x = vector[0];
+		T y = vector[1];
+		T z = vector[2];		
 
-		// Rotation * Translation
-		Matrix<T, 4> result;
+		Vector<T, 3> axis(VL::normalize(vector));
 
-		result(0, 0) = r[0];
-		result(0, 1) = r[1];
-		result(0, 2) = r[2];
-		result(0, 3) = -dot(r, position);
+		T oneMinusC = static_cast<T>(1) - c;
+		Vector<T, 3> temp = axis * oneMinusC;
 
-		result(1, 0) = u[0];
-		result(1, 1) = u[1];
-		result(1, 2) = u[2];
-		result(1, 3) = -dot(u, position);
+		Matrix<T, 4> rotationMatrix(1);
+		rotationMatrix(0, 0) = temp[0] * axis[0] + c;
+		rotationMatrix(0, 1) = temp[0] * axis[1] + axis[2] * s;
+		rotationMatrix(0, 2) = temp[0] * axis[2] - axis[1] * s;
 
-		result(2, 0) = d[0];
-		result(2, 1) = d[1];
-		result(2, 2) = d[2];
-		result(2, 3) = -dot(d, position);
+		rotationMatrix(1, 0) = temp[1] * axis[0] - axis[2] * s;
+		rotationMatrix(1, 1) = temp[1] * axis[1] + c;
+		rotationMatrix(1, 2) = temp[1] * axis[2] + axis[0] * s;
+
+		rotationMatrix(2, 0) = temp[2] * axis[0] + axis[1] * s;
+		rotationMatrix(2, 1) = temp[2] * axis[1] - axis[0] * s;
+		rotationMatrix(2, 2) = temp[2] * axis[2] + c;
+
+		Matrix<T, 4> result = rotationMatrix * matrix;
 
 		return result;
 	}
 
 	template<typename T>
-	Matrix<T, 4> ortho(T left, T right, T bottom, T top, T zNear, T zFar)
+	constexpr Matrix<T, 4> lookAt(Vector<T, 3> position, Vector<T, 3> target, Vector<T, 3> upVector)
+	{
+		// Gram-Schmidt process to get orthonormalized camera coordinates
+		const auto d = normalize(target - position);
+		const auto r = normalize(cross(d, upVector));
+		const auto u = cross(r, d);
+
+		// Rotation * Translation
+		Matrix<T, 4> result(1);
+
+		result(0, 0) = r[0];
+		result(0, 1) = r[1];
+		result(0, 2) = r[2];
+
+		result(1, 0) = u[0];
+		result(1, 1) = u[1];
+		result(1, 2) = u[2];		
+
+		result(2, 0) = -d[0];
+		result(2, 1) = -d[1];
+		result(2, 2) = -d[2];
+
+		result(3, 0) = -dot(u, position);
+		result(3, 1) = -dot(r, position);
+		result(3, 2) = dot(d, position);
+
+		return result;
+	}
+
+	template<typename T>
+	constexpr Matrix<T, 4> ortho(T left, T right, T bottom, T top, T zNear, T zFar)
 	{
 		// (Scale matrix) * (Translation matrix)
 		Matrix<T, 4> result;
@@ -248,9 +281,8 @@ namespace VL
 		return result;
 	};
 
-
 	template<typename T>
-	Matrix<T, 4> perspective(T fov, T aspect, T zNear, T zFar)
+	constexpr Matrix<T, 4> perspective(T fov, T aspect, T zNear, T zFar)
 	{
 		// Perspective projection
 		// (Orthographic matrix) * (Perspective matrix)
@@ -261,11 +293,11 @@ namespace VL
 		// Set diagonal
 		result(0, 0) = f / aspect;
 		result(1, 1) = f;
-		result(2, 2) = -(zFar + zNear) / (zNear - zFar);
+		result(2, 2) = -(zFar + zNear) / (zFar - zNear);
 
 		// Set other columns
-		result(3, 2) = static_cast<T>(1);
-		result(2, 3) = (static_cast<T>(2) * zNear * zFar) / (zNear - zFar);
+		result(2, 3) = -static_cast<T>(1);
+		result(3, 2) = -(static_cast<T>(2) * zNear * zFar) / (zFar - zNear);
 
 		return result;
 	}

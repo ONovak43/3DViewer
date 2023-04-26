@@ -26,7 +26,15 @@ namespace VL
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glEnable(GL_TEXTURE_2D);
+
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+            glFrontFace(GL_CCW);
+
+            enableDepthTesting();
+
+            glEnable(GL_LINE_SMOOTH);
+            //glPolygonMode(GL_FRONT, GL_LINE);
         }
 
 		void OpenGLRenderer::setWindowHint()
@@ -78,6 +86,7 @@ namespace VL
         void OpenGLRenderer::enableDepthTesting()
         {
             glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LESS);
             depthTesting = GL_DEPTH_BUFFER_BIT;
         }
 
@@ -107,6 +116,11 @@ namespace VL
         std::shared_ptr<IShader> OpenGLRenderer::createShader(const std::string& name)
         {
             return std::make_shared<OpenGLShader>(name);
+        }
+
+        std::shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer()
+        {
+            return std::make_shared<OpenGLVertexBuffer>();
         }
 
         std::shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(uint32_t size)

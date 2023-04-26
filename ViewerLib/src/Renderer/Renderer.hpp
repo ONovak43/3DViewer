@@ -24,6 +24,7 @@ namespace VL
 		std::shared_ptr<IShaderProgram> createShaderProgram(const std::string& path);
 		std::shared_ptr<IShader> createShader(const std::string& name);
 
+		std::shared_ptr<IVertexBuffer> createVertexBuffer();
 		std::shared_ptr<IVertexBuffer> createVertexBuffer(uint32_t size);
 		std::shared_ptr<IVertexBuffer> createVertexBuffer(const std::vector<float>& data);
 		std::shared_ptr<IIndexBuffer> createIndexBuffer(const std::vector<uint32_t>& data);

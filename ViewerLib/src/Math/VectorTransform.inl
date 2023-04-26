@@ -1,14 +1,14 @@
 namespace VL 
 {
     template<typename T, std::size_t S>
-    T dot(const Vector<T, S>& v1, const Vector<T, S>& v2)
+    constexpr T dot(const Vector<T, S>& v1, const Vector<T, S>& v2)
     {
         auto v1ToArray = v1.toArray();
         auto v2ToArray = v2.toArray();
         return std::inner_product(v1ToArray.begin(), v1ToArray.end(), v2ToArray.begin(), T{});
     }
     template<typename T>
-    Vector<T, 3> cross(const Vector<T, 3>& v1, const Vector<T, 3>& v2)
+    constexpr Vector<T, 3> cross(const Vector<T, 3>& v1, const Vector<T, 3>& v2)
     {
         return Vector<T, 3>(std::array{
             v1[1] * v2[2] - v1[2] * v2[1],
@@ -18,13 +18,13 @@ namespace VL
     };
 
     template<typename T, std::size_t S>
-    auto length(const Vector<T, S>& v)
+    constexpr auto length(const Vector<T, S>& v)
     {
         return std::sqrt(dot(v, v));
     };
 
     template<typename T, std::size_t S>
-    Vector<T, S> normalize(const Vector<T, S>& v)
+    constexpr Vector<T, S> normalize(const Vector<T, S>& v)
     {
         auto l = length(v);
         auto vToArray = v.toArray();

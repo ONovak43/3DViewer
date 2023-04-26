@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "EventManager.hpp"
+
 namespace VL
 {
 	void EventManager::subscribe(IEventManager::EVENT_TYPE eventType, eventCallbackFn callback)

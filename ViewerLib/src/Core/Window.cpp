@@ -52,6 +52,26 @@ namespace VL
 				break;*/
 			}
 		});
+
+		glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos) {
+			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+			eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_MOVED, std::make_shared<MouseMovedEvent>(xpos, ypos));
+		});
+
+		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods) {
+			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
+			auto btnCasted = static_cast<MouseButtonEvent::MOUSE_CODES>(button);
+
+			switch (action)
+			{
+			case GLFW_PRESS:
+				eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_BUTTON_PRESSED, std::make_shared<MouseButtonPressedEvent>(btnCasted));
+				break;
+			case GLFW_RELEASE:
+				eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_BUTTON_RELEASED, std::make_shared<MouseButtonReleasedEvent>(btnCasted));
+				break;
+			}
+		});
 	}
 
 	Window::Window()

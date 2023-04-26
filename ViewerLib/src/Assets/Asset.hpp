@@ -12,7 +12,7 @@ namespace VL
 		Asset() = default;
 		virtual ~Asset() = default;
 
-		std::shared_ptr<T> getAsset(const std::string& name);
+		std::shared_ptr<T> getAsset(const std::string& name, bool cache = true);
 
 	protected:
 		virtual std::shared_ptr<T> loadAsset(const std::string& name) = 0;

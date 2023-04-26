@@ -25,29 +25,29 @@ namespace VL
 		AssetManager& operator=(const AssetManager&) = delete;
 		AssetManager& operator=(AssetManager&&) noexcept = delete;
 
-		inline std::shared_ptr<std::string> getTextAsset(const std::string& name)
+		inline std::shared_ptr<std::string> getTextAsset(const std::string& name, bool cache = true)
 		{
-			return m_textAssets.getAsset(name);
+			return m_textAssets.getAsset(name, cache);
 		}
 
-		inline std::shared_ptr<VL::Utils::Image> getImageAsset(const std::string& name)
+		inline std::shared_ptr<VL::Utils::Image> getImageAsset(const std::string& name, bool cache = true)
 		{
-			return m_imageAssets.getAsset(name);
+			return m_imageAssets.getAsset(name, cache);
 		}
 
-		inline std::shared_ptr<VL::OpenGL::OpenGLShader> getShader(const std::string& name)
+		inline std::shared_ptr<VL::OpenGL::OpenGLShader> getShader(const std::string& name, bool cache = true)
 		{
-			return m_shaderAssets.getAsset(name);
+			return m_shaderAssets.getAsset(name, cache);
 		}
 
-		inline std::shared_ptr<VL::OpenGL::OpenGLShaderProgram> getShaderProgram(const std::string& name)
+		inline std::shared_ptr<VL::OpenGL::OpenGLShaderProgram> getShaderProgram(const std::string& name, bool cache = true)
 		{
-			return m_shaderProgramAssets.getAsset(name);
+			return m_shaderProgramAssets.getAsset(name, cache);
 		}
 
-		inline std::shared_ptr<VL::OpenGL::OpenGLTexture> get2DTexture(const std::string& name)
+		inline std::shared_ptr<VL::OpenGL::OpenGLTexture> get2DTexture(const std::string& name, bool cache = true)
 		{
-			return m_gl2DTextureAssets.getAsset(name);
+			return m_gl2DTextureAssets.getAsset(name, cache);
 		}
 
 	private:

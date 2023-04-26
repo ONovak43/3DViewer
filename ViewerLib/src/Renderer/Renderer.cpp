@@ -69,6 +69,12 @@ namespace VL
 		return m_renderer->createShader(name);
 	}
 
+	std::shared_ptr<IVertexBuffer> Renderer::createVertexBuffer()
+	{
+		ASSERT(m_renderer != nullptr, "Renderer is not set");
+		return m_renderer->createVertexBuffer();
+	}
+
 	std::shared_ptr<IVertexBuffer> Renderer::createVertexBuffer(uint32_t size)
 	{
 		ASSERT(m_renderer != nullptr, "Renderer is not set");

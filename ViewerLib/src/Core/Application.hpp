@@ -25,10 +25,14 @@ namespace VL
 		};
 
 		int32_t run();
-
+		void stop();
+		
+		// Events
 		void onClose(std::shared_ptr<WindowCloseEvent> e);
 		void onResize(std::shared_ptr<WindowResizeEvent> e);
 		void onKeyPress(std::shared_ptr<KeyPressEvent> e);
+		void onMouseMove(std::shared_ptr<MouseMovedEvent> e);
+
 		void setClient(std::shared_ptr<Client> client);
 		Renderer* getRenderer();
 

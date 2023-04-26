@@ -10,7 +10,7 @@ namespace VL
 			: VL::ITexture(), m_type(GL_TEXTURE_2D), m_width(0), m_height(0), m_id(0)
 		{
 			ASSERT(type == TEXTURE_TYPE::TEXTURE_2D, "Only 2D textures are supported for now");
-			auto image = AssetManager::getInstance().getImageAsset(path); // Problem
+			auto image = AssetManager::getInstance().getImageAsset(path, false); 
 
 			if (image == nullptr)
 			{

@@ -4,15 +4,13 @@
 
 namespace VL
 {
-	class WindowCloseEvent :
-		public Event
+	class WindowCloseEvent : public Event
 	{
 		public:
 			WindowCloseEvent() = default;
 	};
 
-	class WindowResizeEvent :
-		public Event
+	class WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(uint32_t width, uint32_t height)
@@ -27,8 +25,7 @@ namespace VL
 		uint32_t m_height;
 	};
 
-	class WindowMoveEvent
-		: public Event
+	class WindowMoveEvent : public Event
 	{
 	public:
 		WindowMoveEvent(int32_t x, int32_t y)
@@ -40,8 +37,7 @@ namespace VL
 		int32_t m_y;
 	};
 
-	class KeyboardEvent :
-		public Event
+	class KeyboardEvent : public Event
 	{
 	public:
 		enum class KEY_CODES
@@ -169,7 +165,7 @@ namespace VL
 			MENU = 348
 		};
 		public:
-			KeyboardEvent(KEY_CODES key)
+			explicit KeyboardEvent(KEY_CODES key)
 				: Event(), m_keyCode(key)
 			{
 			};
@@ -181,8 +177,7 @@ namespace VL
 			KEY_CODES m_keyCode = KEY_CODES::NONE;
 	};	
 
-	class KeyPressEvent :
-		public KeyboardEvent
+	class KeyPressEvent : public KeyboardEvent
 	{
 	public:
 		KeyPressEvent(KEY_CODES key)
@@ -191,13 +186,73 @@ namespace VL
 		}
 	};
 
-	class KeyReleaseEvent :
-		public KeyboardEvent
+	class KeyReleaseEvent : public KeyboardEvent
 	{
 	public:
-	KeyReleaseEvent(KEY_CODES key)
+		KeyReleaseEvent(KEY_CODES key)
 			: KeyboardEvent(key)
 		{
 		}
-	};;
+	};
+
+	class MouseMovedEvent : public Event
+	{
+	public:
+		MouseMovedEvent(float x, float y)
+			: Event(), m_x(x), m_y(y)
+		{
+		}
+
+		inline float getX() const { return m_x; }
+		inline float getY() const { return m_y; }
+
+	private:
+		float m_x;
+		float m_y;
+	};
+
+	class MouseButtonEvent : public Event
+	{
+	public:
+		enum class MOUSE_CODES
+		{
+			BUTTON_0 = 0,
+			BUTTON_1 = 1,
+			BUTTON_2 = 2,
+			BUTTON_3 = 3,
+			BUTTON_4 = 4,
+			BUTTON_5 = 5,
+			BUTTON_6 = 6,
+			BUTTON_7 = 7,
+
+			ButtonLast = BUTTON_7,
+			ButtonLeft = BUTTON_0,
+			ButtonRight = BUTTON_1,
+			ButtonMiddle = BUTTON_2
+		};
+
+		explicit MouseButtonEvent(MOUSE_CODES button)
+			: m_button(button)
+		{
+		}
+
+		inline MOUSE_CODES getButton() const { return m_button; }
+
+	private:
+		MOUSE_CODES m_button;
+	};
+
+	class MouseButtonPressedEvent : public MouseButtonEvent
+	{
+	public:
+		MouseButtonPressedEvent(const MOUSE_CODES button)
+			: MouseButtonEvent(button) {}
+	};
+
+	class MouseButtonReleasedEvent : public MouseButtonEvent
+	{
+	public:
+		MouseButtonReleasedEvent(const MOUSE_CODES button)
+			: MouseButtonEvent(button) {}
+	};
 }

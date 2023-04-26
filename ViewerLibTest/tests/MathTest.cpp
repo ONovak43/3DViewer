@@ -407,9 +407,9 @@ namespace MathTests
 
 			EXPECT_FLOAT_EQ(f / aspect, perspectiveMatrix(0, 0));
 			EXPECT_FLOAT_EQ(f, perspectiveMatrix(1, 1));
-			EXPECT_FLOAT_EQ(-(zFar + zNear) / (zNear - zFar), perspectiveMatrix(2, 2));
-			EXPECT_FLOAT_EQ((2.f * zNear * zFar) / (zNear - zFar), perspectiveMatrix(2, 3));
-			EXPECT_FLOAT_EQ(1.f, perspectiveMatrix(3, 2));
+			EXPECT_FLOAT_EQ(-(zFar + zNear) / (zFar - zNear), perspectiveMatrix(2, 2));
+			EXPECT_FLOAT_EQ(-(2.f * zNear * zFar) / (zFar - zNear), perspectiveMatrix(3, 2));
+			EXPECT_FLOAT_EQ(-1.f, perspectiveMatrix(2, 3));
 		}
 
 		// Story:
@@ -782,6 +782,33 @@ namespace MathTests
 			}
 		}
 
+		TEST(MatrixTransformTest, TestRotate) {
+			Matrix<float, 4> m1(std::array{
+				1.0f, 2.0f, 3.0f, 4.0f,
+				5.0f, 6.0f, 7.0f, 8.0f,
+				9.0f, 10.0f, 11.0f, 12.0f,
+				13.0f, 14.0f, 15.0f, 16.0f
+			});
+
+			float angle = 0.5f;
+
+			VL::Vector<float, 3> axis(std::array{ 0.f, 1.f, 0.f });
+
+			Matrix<float, 4> expectedResult(std::array{
+				-3.43725f, -3.03909f, -2.64093f, -2.24278f,
+				5.f, 6.f, 7.f, 8.f,
+				8.37767f, 9.73468f, 11.0917f, 12.4487f,
+				13.f, 14.f, 15.f, 16.f
+			});
+
+			auto result = VL::rotate(m1, angle, axis);
+
+			// Testování výsledku
+			for (int i = 0; i < 16; i++) {
+				EXPECT_NEAR(expectedResult[i], result[i], 0.0001f);
+			}
+		}
+
 	}
 
 	namespace VectorTest
@@ -1046,6 +1073,22 @@ namespace MathTests
 			for (auto i = 0; i < 4; ++i) {
 				EXPECT_FLOAT_EQ(result[i], v41[i] / expectedLength);
 			}
+		}
+	}
+
+	namespace MathUtilsTest
+	{
+		TEST(MatuUtilsTest, TestDegreesToRadians)
+		{
+			// Given
+			const double degrees = 45.0;
+			const double expectedResult = 3.14159265358979323846 / 4.0;
+
+			// When
+			const double result = VL::radians(degrees);
+
+			// Then
+			EXPECT_DOUBLE_EQ(result, expectedResult);
 		}
 	}
 }
