@@ -44,6 +44,7 @@ namespace VL
 		virtual std::shared_ptr<ITexture> createTexture(uint32_t width, uint32_t height, TEXTURE_TYPE type) = 0;
 		virtual std::shared_ptr<ITexture> loadTexture(const std::string& path, TEXTURE_TYPE type) = 0;
 
+		virtual void renderTriangles(const std::shared_ptr<IVertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
 	};
 }
 

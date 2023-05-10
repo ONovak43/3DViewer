@@ -7,13 +7,19 @@
 #include "Core/Application.hpp"
 
 #include <filesystem>
+#include <utility>
+
+Viewer::Viewer()
+    : m_camera(CameraProps()), m_renderer(nullptr), m_program(nullptr), m_rotation(0.f), m_deltaTime(0.f)
+{
+}
 
 void Viewer::start()
 {
     using VL::AssetManager;
-    auto path = std::filesystem::current_path();
-    auto shaderPath = path / "assets/Shader/main";
-    auto objPath = path / "assets/Objects/quirky/scene.gltf";
+    auto path{ std::filesystem::current_path() };
+    auto shaderPath{ path / "assets/Shader/main" };
+    auto objPath{ path / "assets/Objects/quirky_bird/scene.gltf" };
 
     std::string shaderAsset{ shaderPath.generic_string() };
     std::string objAsset{ objPath.generic_string() };
@@ -21,26 +27,31 @@ void Viewer::start()
     auto _program = AssetManager::getInstance().getShaderProgram(shaderAsset);
     m_program = std::move(_program);
     m_modelRenderer = std::make_unique<ModelRenderer>(objAsset, m_renderer);
+    m_camera.setPosition(VL::vec3(std::array{ -1.f, 0.f, 0.f }));
 }
 
 void Viewer::update(VL::StackAllocator<STACK_ALLOCATOR_SIZE>& stackAllocator, float deltaTime)
 {
+    m_deltaTime = deltaTime;
     m_program->bind();
     m_rotation += 10.f * deltaTime;
-    auto camPosition = VL::vec3(std::array{ 0.0f, 0.0f, 1.f });
-    auto camFront = VL::vec3(std::array{ 0.0f, 0.0f, -1.0f });
-    auto worldUp = VL::vec3(std::array{ 0.0f, 1.0f, 0.0f });
 
-    auto projectionMatrix = VL::perspective(1.57079633f, 800.f/600.f, 0.1f, 100.0f); // EDIT
-    auto viewMatrix = VL::lookAt(camPosition, camPosition + camFront, worldUp);
-    auto model = VL::mat4(1.0f);
+    auto projectionMatrix{ VL::perspective(VL::radians(90.f), 800.f / 600.f, 0.1f, 100.0f) }; // EDIT
+    auto model{ VL::mat4(1.0f) };
 
-    model = VL::translate(model, VL::vec3(std::array{ 0.0f, -0.2f, 0.0f }));
-    model = VL::scale(model, VL::vec3(std::array{ .3f, .3f, .3f }));
-    model = VL::rotate(model, VL::radians(m_rotation), VL::vec3(std::array{ 1.f, 1.f, 0.f }));
+    model = VL::translate(model, VL::vec3(std::array{ 0.0f, -1.f, 0.0f }));
+    model = VL::scale(model, VL::vec3(std::array{ 1.f, 1.f, 1.f }));
+    //model = VL::rotate(model, VL::radians(m_rotation), VL::vec3(std::array{ 1.f, 1.f, 0.f }));
+
+    auto moveDirections = m_camera.getMoveDirections();
+   
+    for(auto& dir : moveDirections) {
+        auto finalCameraPos = m_camera.getPosition() + dir * m_deltaTime * 1.f;
+        m_camera.setPosition(finalCameraPos);
+    }
 
     m_program->setMat4("projection", projectionMatrix);
-    m_program->setMat4("view", viewMatrix);
+    m_program->setMat4("view", m_camera.getViewMatrix());
     m_program->setMat4("model", model);
 
     m_modelRenderer->draw(m_program);
@@ -76,15 +87,69 @@ void Viewer::setRenderer(VL::Renderer* renderer)
     m_renderer = renderer;
 }
 
-void Viewer::onKeyPressedEvent(std::shared_ptr<VL::KeyPressEvent>& e)
+void Viewer::onKeyPressedEvent(const std::shared_ptr<VL::KeyPressEvent>& e)
 {
     auto key = e->getKeyCode();
 
-    if (key == VL::KeyboardEvent::KEY_CODES::ESCAPE) {
+    switch (key)
+    {
+    case VL::KeyboardEvent::KEY_CODES::ESCAPE:
         VL::Application::getInstance().stop();
+        break;
+    default:
+        onKeyEvent(key, KEY_EVENT_TYPE::PRESSED);
     }
 }
 
-void Viewer::onMouseMovedEvent(std::shared_ptr<VL::MouseMovedEvent>& e)
+void Viewer::onKeyReleasedEvent(const std::shared_ptr<VL::KeyReleaseEvent>& e)
 {
+    auto key = e->getKeyCode();
+
+    switch (key)
+    {
+    default:
+        onKeyEvent(key, KEY_EVENT_TYPE::RELEASED);
+    }
+}
+
+void Viewer::onMouseMovedEvent(const std::shared_ptr<VL::MouseMovedEvent>& e)
+{
+    auto yaw = m_camera.getYaw() +  (e->getX() * 0.1);
+    auto pitch = m_camera.getPitch() + (e->getY() * 0.1);
+
+    if (pitch >= 89.f) 
+    {
+		pitch = 89.f;
+	}
+    else if (pitch < -89.f)
+    {
+        pitch = -89.f;
+    }
+
+    if (yaw > 360 || yaw < -360) 
+    {
+        yaw = 0.f;
+    }
+
+    m_camera.setOrientation(yaw, pitch);
+}
+
+void Viewer::onKeyEvent(VL::KeyboardEvent::KEY_CODES key, KEY_EVENT_TYPE type)
+{
+    using codes = VL::KeyboardEvent::KEY_CODES;
+
+    switch (key)
+    {
+    case codes::W:
+        m_camera.move(Camera::DIRECTION::FORWARD, type == KEY_EVENT_TYPE::PRESSED);
+        break;
+    case codes::S:
+        m_camera.move(Camera::DIRECTION::BACKWARD, type == KEY_EVENT_TYPE::PRESSED);
+        break;
+    case codes::A:
+        m_camera.move(Camera::DIRECTION::LEFT, type == KEY_EVENT_TYPE::PRESSED);
+        break;
+    case codes::D:
+        m_camera.move(Camera::DIRECTION::RIGHT, type == KEY_EVENT_TYPE::PRESSED);
+    }
 }

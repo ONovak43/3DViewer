@@ -14,21 +14,16 @@ uniform sampler2D texture_specular2;
 
 void main()
 {
-// Naètení barvy z textury
     vec4 color1 = texture(texture_diffuse1, TexCoords);
     vec4 color2 = texture(texture_diffuse2, TexCoords);
     vec4 color3 = texture(texture_diffuse3, TexCoords);
 
-    // Smíchání barev z textur pomocí konstant
     vec4 finalColor = color1 * 0.4 + color2 * 0.4 + color3 * 0.2;
 
-    // Naètení spekulárního osvìtlení z textury
     vec4 specular1 = texture(texture_specular1, TexCoords);
     vec4 specular2 = texture(texture_specular2, TexCoords);
 
-    // Smíchání spekulárního osvìtlení z textur
     vec4 finalSpecular = specular1 * 0.6 + specular2 * 0.4;
 
-    // Výpoèet výsledné barvy pixelu s aplikací spekulárního osvìtlení
     FragColor = finalColor + finalSpecular;
 }

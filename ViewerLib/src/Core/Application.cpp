@@ -62,6 +62,11 @@ namespace VL
 			app.onKeyPress(std::dynamic_pointer_cast<KeyPressEvent>(e));
 		});
 
+		m_eventManager.subscribe(EventManager::EVENT_TYPE::KEY_RELEASED, [](std::shared_ptr<Event> e) {
+			Application& app = Application::getInstance();
+			app.onKeyRelease(std::dynamic_pointer_cast<KeyReleaseEvent>(e));
+		});
+
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_MOVED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onMouseMove(std::dynamic_pointer_cast<MouseMovedEvent>(e));
@@ -76,13 +81,13 @@ namespace VL
 		return deltaTime;
 	}
 
-	void Application::onClose(std::shared_ptr<WindowCloseEvent> e)
+	void Application::onClose(const std::shared_ptr<WindowCloseEvent>& e)
 	{
 		m_impl->m_client->stop();
 		m_impl->m_running = false;
 	}
 
-	void Application::onResize(std::shared_ptr<WindowResizeEvent> e)
+	void Application::onResize(const std::shared_ptr<WindowResizeEvent>& e)
 	{
 		if (e->getWidth() == 0 && e->getHeight() == 0)
 		{
@@ -94,18 +99,22 @@ namespace VL
 		m_impl->m_renderer.onResize(e->getWidth(), e->getHeight());
 	}
 
-	void Application::onKeyPress(std::shared_ptr<KeyPressEvent> e)
+	void Application::onKeyPress(const std::shared_ptr<KeyPressEvent>& e)
 	{
-		
+		m_impl->m_client->onKeyPressedEvent(e);
 	}
 
-	void Application::onMouseMove(std::shared_ptr<MouseMovedEvent> e)
+	void Application::onKeyRelease(const std::shared_ptr<KeyReleaseEvent>& e)
 	{
-		auto x = e->getX();
-		auto y = e->getY();
+		m_impl->m_client->onKeyReleasedEvent(e);
 	}
 
-	void Application::setClient(std::shared_ptr<Client> client)
+	void Application::onMouseMove(const std::shared_ptr<MouseMovedEvent>& e)
+	{
+		m_impl->m_client->onMouseMovedEvent(e);
+	}
+
+	void Application::setClient(const std::shared_ptr<Client>& client)
 	{
 		m_impl->m_client = client;
 		m_impl->m_client->setRenderer(&(m_impl->m_renderer));

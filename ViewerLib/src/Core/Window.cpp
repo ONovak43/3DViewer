@@ -119,6 +119,9 @@ namespace VL
 		renderer.setContext(m_impl->m_window);
 
 		m_impl->setCallbacks(eventManager);
+
+		glfwSetInputMode(m_impl->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 		return ERROR_CODE::NONE;
 	}
 

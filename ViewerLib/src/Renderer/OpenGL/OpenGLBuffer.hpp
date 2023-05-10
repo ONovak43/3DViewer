@@ -83,6 +83,7 @@ namespace VL
 
             [[nodiscard]] uint32_t getSize() const override;
             [[nodiscard]] uint32_t getId() const override;
+
         private:
             OpenGLBuffer m_buffer;
         };

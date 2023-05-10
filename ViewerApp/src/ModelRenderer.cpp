@@ -22,10 +22,7 @@ void ModelRenderer::draw(std::shared_ptr<VL::IShaderProgram>& program)
 	for (auto i = 0; i < meshes.size(); i++)
 	{
 		prepareTextures(meshes, i, program);
-
-		m_vertexArray[i]->bind();
-		glDrawElements(GL_TRIANGLES, static_cast<uint32_t>(meshes[i].m_indices.size()), GL_UNSIGNED_INT, nullptr); // TODO: CREATE RENDERER IN LIBRARY!
-		m_vertexArray[i]->unbind();
+        m_renderer->renderTriangles(m_vertexArray[i]);
 	}
 }
 

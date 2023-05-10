@@ -11,6 +11,8 @@ project "ViewerApp"
 		"src/**.cpp",
 		"src/**.hpp",
 		"src/**.inl",
+		"vendor/glm/**.hpp",
+		"vendor/glm/**.inl",
 	}
 
 	defines
@@ -27,7 +29,8 @@ project "ViewerApp"
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.lodepng}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.assimp}"
+		"%{IncludeDir.assimp}",
+		"%{IncludeDir.glm}"
 	}
 
 	links

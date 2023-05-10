@@ -28,12 +28,13 @@ namespace VL
 		void stop();
 		
 		// Events
-		void onClose(std::shared_ptr<WindowCloseEvent> e);
-		void onResize(std::shared_ptr<WindowResizeEvent> e);
-		void onKeyPress(std::shared_ptr<KeyPressEvent> e);
-		void onMouseMove(std::shared_ptr<MouseMovedEvent> e);
+		void onClose(const std::shared_ptr<WindowCloseEvent>& e);
+		void onResize(const std::shared_ptr<WindowResizeEvent>& e);
+		void onKeyPress(const std::shared_ptr<KeyPressEvent>& e);
+		void onKeyRelease(const std::shared_ptr<KeyReleaseEvent>& e);
+		void onMouseMove(const std::shared_ptr<MouseMovedEvent>& e);
 
-		void setClient(std::shared_ptr<Client> client);
+		void setClient(const std::shared_ptr<Client>& client);
 		Renderer* getRenderer();
 
 	private:

@@ -243,15 +243,15 @@ namespace VL
 		Matrix<T, 4> result(1);
 
 		result(0, 0) = r[0];
-		result(0, 1) = r[1];
-		result(0, 2) = r[2];
+		result(1, 0) = r[1];
+		result(2, 0) = r[2];
 
-		result(1, 0) = u[0];
+		result(0, 1) = u[0];
 		result(1, 1) = u[1];
-		result(1, 2) = u[2];		
+		result(2, 1) = u[2];		
 
-		result(2, 0) = -d[0];
-		result(2, 1) = -d[1];
+		result(0, 2) = -d[0];
+		result(1, 2) = -d[1];
 		result(2, 2) = -d[2];
 
 		result(3, 0) = -dot(u, position);

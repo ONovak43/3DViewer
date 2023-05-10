@@ -111,5 +111,10 @@ namespace VL
 		return m_renderer->loadTexture(path, type);
 	}
 
+	void Renderer::renderTriangles(const std::shared_ptr<IVertexArray>& vertexArray, uint32_t indexCount)
+	{
+		m_renderer->renderTriangles(vertexArray, indexCount);
+	}
+
 
 }

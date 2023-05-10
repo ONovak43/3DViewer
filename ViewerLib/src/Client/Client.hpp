@@ -24,7 +24,8 @@ namespace VL
 		virtual void setRenderer(Renderer* renderer) = 0;
 
 		// Events
-		virtual void onKeyPressedEvent(std::shared_ptr<KeyPressEvent>& e) = 0;
-		virtual void onMouseMovedEvent(std::shared_ptr<MouseMovedEvent>& e) = 0;
+		virtual void onKeyPressedEvent(const std::shared_ptr<KeyPressEvent>& e) = 0;
+		virtual void onKeyReleasedEvent(const std::shared_ptr<KeyReleaseEvent>& e) = 0;
+		virtual void onMouseMovedEvent(const std::shared_ptr<MouseMovedEvent>& e) = 0;
 	};
 }
