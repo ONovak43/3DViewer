@@ -8,6 +8,15 @@ namespace VL
 	}
 
 	template<class T, std::size_t S>
+	constexpr Vector<T, S>::Vector(T value)
+		: m_vData{}
+	{
+		for (auto i = 0; i < S; i++) {
+			m_vData[i] = value;
+		}
+	}
+
+	template<class T, std::size_t S>
 	template<typename ArrayData>
 		requires
 	std::is_same_v<std::remove_cvref_t<ArrayData>, std::array<T, S>>

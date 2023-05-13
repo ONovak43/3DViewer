@@ -27,6 +27,12 @@ namespace VL
 		 */
 		constexpr Vector();
 
+		/*
+		 * @brief Constructor
+		 * Initializes the vector with a given value
+		 */
+		constexpr Vector(T value);
+
 		/**
 		 * @brief Constructor
 		 * Initializes the vector with a given array of values

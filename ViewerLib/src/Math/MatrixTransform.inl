@@ -254,8 +254,8 @@ namespace VL
 		result(1, 2) = -d[1];
 		result(2, 2) = -d[2];
 
-		result(3, 0) = -dot(u, position);
-		result(3, 1) = -dot(r, position);
+		result(3, 0) = -dot(r, position);
+		result(3, 1) = -dot(u, position);
 		result(3, 2) = dot(d, position);
 
 		return result;

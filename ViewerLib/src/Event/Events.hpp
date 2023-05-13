@@ -195,10 +195,10 @@ namespace VL
 		}
 	};
 
-	class MouseMovedEvent : public Event
+	class MouseMoveEvent : public Event
 	{
 	public:
-		MouseMovedEvent(float x, float y)
+		MouseMoveEvent(float x, float y)
 			: Event(), m_x(x), m_y(y)
 		{
 		}
@@ -242,17 +242,17 @@ namespace VL
 		MOUSE_CODES m_button;
 	};
 
-	class MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(const MOUSE_CODES button)
+		MouseButtonPressEvent(const MOUSE_CODES button)
 			: MouseButtonEvent(button) {}
 	};
 
-	class MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleaseEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(const MOUSE_CODES button)
+		MouseButtonReleaseEvent(const MOUSE_CODES button)
 			: MouseButtonEvent(button) {}
 	};
 }

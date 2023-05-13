@@ -1,3 +1,4 @@
+#include "MathUtils.hpp"
 #pragma once
 
 namespace VL

@@ -28,15 +28,20 @@ public:
 	// Events
 	void onKeyPressedEvent(const std::shared_ptr<VL::KeyPressEvent>& e) override;
 	void onKeyReleasedEvent(const std::shared_ptr<VL::KeyReleaseEvent>& e) override;
-	void onMouseMovedEvent(const std::shared_ptr<VL::MouseMovedEvent>& e) override;
+	void onMouseMovedEvent(const std::shared_ptr<VL::MouseMoveEvent>& e) override;
+	void onMouseButtonPressedEvent(const std::shared_ptr<VL::MouseButtonPressEvent>& e) override;
+	void onMouseButtonReleasedEvent(const std::shared_ptr<VL::MouseButtonReleaseEvent>& e) override;
 private:
 	void onKeyEvent(VL::KeyboardEvent::KEY_CODES key, KEY_EVENT_TYPE type);
 
 private:
 	Camera m_camera;
-	VL::Renderer* m_renderer;
-	std::unique_ptr<ModelRenderer> m_modelRenderer;
-	std::shared_ptr<VL::IShaderProgram> m_program;
 	float m_rotation = 0.f;
 	float m_deltaTime = 0.f;
+	bool m_enableCameraRotation = false;
+	bool m_resetMousePosition = false;
+	std::shared_ptr<VL::IShaderProgram> m_program;
+	std::unique_ptr<ModelRenderer> m_modelRenderer;
+	VL::Renderer* m_renderer;
+	
 };

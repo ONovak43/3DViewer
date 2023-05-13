@@ -50,6 +50,8 @@ namespace VL
 		void setVSync(bool enable = true);
 		bool shouldClose() const;
 
+		void setCursorVisible(bool visible = true);
+
 	private:
 		class Impl;
 		std::unique_ptr<Impl> m_impl;

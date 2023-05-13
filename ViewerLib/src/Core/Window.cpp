@@ -55,7 +55,7 @@ namespace VL
 
 		glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos) {
 			auto eventManager = static_cast<IEventManager*>(glfwGetWindowUserPointer(window));
-			eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_MOVED, std::make_shared<MouseMovedEvent>(xpos, ypos));
+			eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_MOVED, std::make_shared<MouseMoveEvent>(xpos, ypos));
 		});
 
 		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods) {
@@ -65,10 +65,10 @@ namespace VL
 			switch (action)
 			{
 			case GLFW_PRESS:
-				eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_BUTTON_PRESSED, std::make_shared<MouseButtonPressedEvent>(btnCasted));
+				eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_BUTTON_PRESSED, std::make_shared<MouseButtonPressEvent>(btnCasted));
 				break;
 			case GLFW_RELEASE:
-				eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_BUTTON_RELEASED, std::make_shared<MouseButtonReleasedEvent>(btnCasted));
+				eventManager->notify(IEventManager::EVENT_TYPE::MOUSE_BUTTON_RELEASED, std::make_shared<MouseButtonReleaseEvent>(btnCasted));
 				break;
 			}
 		});
@@ -118,9 +118,7 @@ namespace VL
 
 		renderer.setContext(m_impl->m_window);
 
-		m_impl->setCallbacks(eventManager);
-
-		glfwSetInputMode(m_impl->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		m_impl->setCallbacks(eventManager);		
 
 		return ERROR_CODE::NONE;
 	}
@@ -166,5 +164,17 @@ namespace VL
 	bool Window::shouldClose() const
 	{
 		return glfwWindowShouldClose(m_impl->m_window);
+	}
+
+	void Window::setCursorVisible(bool visible)
+	{
+		if (visible == false)
+		{
+			glfwSetInputMode(m_impl->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
+		else 
+		{
+			glfwSetInputMode(m_impl->m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
 	}
 }

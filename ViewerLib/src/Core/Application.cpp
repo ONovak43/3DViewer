@@ -12,13 +12,14 @@ namespace VL
 	class Application::Impl
 	{
 	public:
-		bool m_running;
-		bool m_minimized;
-		std::shared_ptr<Client> m_client;
 		Window m_window;
 		Renderer m_renderer;
 		EventManager m_eventManager;
 		GUI m_gui;
+		vec4 clearColor = vec4(std::array{ 0.0f, 0.0f, 0.0f, 1.0f });
+		bool m_running;
+		bool m_minimized;
+		std::shared_ptr<Client> m_client;
 		
 	public:
 		Impl();
@@ -69,7 +70,17 @@ namespace VL
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_MOVED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
-			app.onMouseMove(std::dynamic_pointer_cast<MouseMovedEvent>(e));
+			app.onMouseMove(std::dynamic_pointer_cast<MouseMoveEvent>(e));
+		});
+
+		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_BUTTON_PRESSED, [](std::shared_ptr<Event> e) {
+			Application& app = Application::getInstance();
+			app.onMouseButtonPressEvent(std::dynamic_pointer_cast<MouseButtonPressEvent>(e));
+		});
+
+		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_BUTTON_RELEASED, [](std::shared_ptr<Event> e) {
+			Application& app = Application::getInstance();
+			app.onMouseButtonReleaseEvent(std::dynamic_pointer_cast<MouseButtonReleaseEvent>(e));
 		});
 	}
 
@@ -109,9 +120,19 @@ namespace VL
 		m_impl->m_client->onKeyReleasedEvent(e);
 	}
 
-	void Application::onMouseMove(const std::shared_ptr<MouseMovedEvent>& e)
+	void Application::onMouseMove(const std::shared_ptr<MouseMoveEvent>& e)
 	{
 		m_impl->m_client->onMouseMovedEvent(e);
+	}
+
+	void Application::onMouseButtonPressEvent(const std::shared_ptr<MouseButtonPressEvent>& e)
+	{
+		m_impl->m_client->onMouseButtonPressedEvent(e);
+	}
+
+	void Application::onMouseButtonReleaseEvent(const std::shared_ptr<MouseButtonReleaseEvent>& e)
+	{
+		m_impl->m_client->onMouseButtonReleasedEvent(e);
 	}
 
 	void Application::setClient(const std::shared_ptr<Client>& client)
@@ -123,6 +144,16 @@ namespace VL
 	Renderer* Application::getRenderer()
 	{
 		return &m_impl->m_renderer;
+	}
+
+	void Application::setCursorVisible(bool visible)
+	{
+		m_impl->m_window.setCursorVisible(visible);
+	}
+
+	void Application::setClearColor(vec4 color)
+	{
+		m_impl->clearColor = color;
 	}
 
 	int32_t Application::run()
@@ -142,7 +173,7 @@ namespace VL
 			
 			auto time = m_impl->getDeltaTime();
 
-			m_impl->m_renderer.setClearColor(vec4(std::array{ 0.2f, 0.3f, 0.3f, 1.0f }));
+			m_impl->m_renderer.setClearColor(m_impl->clearColor);
 			m_impl->m_renderer.clear();
 
 			m_impl->m_client->update(stackAllocator, time);

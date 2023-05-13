@@ -8,9 +8,10 @@
 
 #include <filesystem>
 #include <utility>
+#include <common.hpp>
 
 Viewer::Viewer()
-    : m_camera(CameraProps()), m_renderer(nullptr), m_program(nullptr), m_rotation(0.f), m_deltaTime(0.f)
+    : m_renderer(nullptr), m_program(nullptr), m_rotation(0.f), m_deltaTime(0.f)
 {
 }
 
@@ -33,29 +34,30 @@ void Viewer::start()
 void Viewer::update(VL::StackAllocator<STACK_ALLOCATOR_SIZE>& stackAllocator, float deltaTime)
 {
     m_deltaTime = deltaTime;
-    m_program->bind();
+    
     m_rotation += 10.f * deltaTime;
 
-    auto projectionMatrix{ VL::perspective(VL::radians(90.f), 800.f / 600.f, 0.1f, 100.0f) }; // EDIT
+    // Model
     auto model{ VL::mat4(1.0f) };
-
     model = VL::translate(model, VL::vec3(std::array{ 0.0f, -1.f, 0.0f }));
-    model = VL::scale(model, VL::vec3(std::array{ 1.f, 1.f, 1.f }));
-    //model = VL::rotate(model, VL::radians(m_rotation), VL::vec3(std::array{ 1.f, 1.f, 0.f }));
+    model = VL::scale(model, VL::vec3(1.f));
 
-    auto moveDirections = m_camera.getMoveDirections();
-   
-    for(auto& dir : moveDirections) {
-        auto finalCameraPos = m_camera.getPosition() + dir * m_deltaTime * 1.f;
-        m_camera.setPosition(finalCameraPos);
+    // Camera
+    auto position{ m_camera.getPosition() };
+    auto direction{ m_camera.getMoveDirection() };
+    auto finalCameraPos = position + direction * m_deltaTime * 2.f ;
+    m_camera.setPosition(finalCameraPos);
+
+    // Projection
+    auto projectionMatrix{ VL::perspective(VL::radians(90.f), 800.f / 600.f, 0.1f, 100.0f) }; // EDIT
+
+    m_program->bind();
+    {
+        m_program->setMat4("projection", projectionMatrix);
+        m_program->setMat4("view", m_camera.getViewMatrix());
+        m_program->setMat4("model", model);
+        m_modelRenderer->draw(m_program);
     }
-
-    m_program->setMat4("projection", projectionMatrix);
-    m_program->setMat4("view", m_camera.getViewMatrix());
-    m_program->setMat4("model", model);
-
-    m_modelRenderer->draw(m_program);
-
     m_program->unbind();
 }
 
@@ -90,7 +92,6 @@ void Viewer::setRenderer(VL::Renderer* renderer)
 void Viewer::onKeyPressedEvent(const std::shared_ptr<VL::KeyPressEvent>& e)
 {
     auto key = e->getKeyCode();
-
     switch (key)
     {
     case VL::KeyboardEvent::KEY_CODES::ESCAPE:
@@ -112,26 +113,54 @@ void Viewer::onKeyReleasedEvent(const std::shared_ptr<VL::KeyReleaseEvent>& e)
     }
 }
 
-void Viewer::onMouseMovedEvent(const std::shared_ptr<VL::MouseMovedEvent>& e)
+void Viewer::onMouseMovedEvent(const std::shared_ptr<VL::MouseMoveEvent>& e)
 {
-    auto yaw = m_camera.getYaw() +  (e->getX() * 0.1);
-    auto pitch = m_camera.getPitch() + (e->getY() * 0.1);
-
-    if (pitch >= 89.f) 
+    if (m_enableCameraRotation == false)
     {
-		pitch = 89.f;
+		return;
 	}
-    else if (pitch < -89.f)
+
+    auto x = e->getX();
+    auto y = e->getY();
+    static float lastX = x;
+    static float lastY = y;
+
+    if (m_resetMousePosition)
     {
-        pitch = -89.f;
+        m_resetMousePosition = false;
+        lastX = x;
+        lastY = y;
     }
 
-    if (yaw > 360 || yaw < -360) 
-    {
-        yaw = 0.f;
-    }
+    auto yaw = m_camera.getYaw() + ((x - lastX) * 0.5f);
+    auto pitch = m_camera.getPitch() + ((lastY - y) * 0.5f);
+
+    pitch = std::clamp(pitch, -89.f, 89.f);
+    yaw = std::clamp(yaw, -360.f, 360.f);
 
     m_camera.setOrientation(yaw, pitch);
+
+    lastX = x;
+    lastY = y;
+}
+
+void Viewer::onMouseButtonPressedEvent(const std::shared_ptr<VL::MouseButtonPressEvent>& e)
+{
+    if (e->getButton() == VL::MouseButtonPressEvent::MOUSE_CODES::ButtonMiddle)
+    {
+        m_enableCameraRotation = true;
+        VL::Application::getInstance().setCursorVisible(false);
+    }
+}
+
+void Viewer::onMouseButtonReleasedEvent(const std::shared_ptr<VL::MouseButtonReleaseEvent>& e)
+{
+    if (e->getButton() == VL::MouseButtonPressEvent::MOUSE_CODES::ButtonMiddle)
+    {
+        m_enableCameraRotation = false;
+        VL::Application::getInstance().setCursorVisible(true);
+        m_resetMousePosition = true;
+    }
 }
 
 void Viewer::onKeyEvent(VL::KeyboardEvent::KEY_CODES key, KEY_EVENT_TYPE type)
@@ -151,5 +180,17 @@ void Viewer::onKeyEvent(VL::KeyboardEvent::KEY_CODES key, KEY_EVENT_TYPE type)
         break;
     case codes::D:
         m_camera.move(Camera::DIRECTION::RIGHT, type == KEY_EVENT_TYPE::PRESSED);
+        break;
+    case codes::Q:
+        m_camera.move(Camera::DIRECTION::UP, type == KEY_EVENT_TYPE::PRESSED);
+        break;
+    case codes::E:
+        m_camera.move(Camera::DIRECTION::DOWN, type == KEY_EVENT_TYPE::PRESSED);
+        break;
+    case codes::R:
+        m_camera.setPosition(VL::vec3(std::array{ -1.f, 0.f, 0.f }));
+        m_camera.setOrientation(0.5f, 0.f);
+        m_resetMousePosition = true;
+        break;
     }
 }

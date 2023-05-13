@@ -26,6 +26,8 @@ namespace VL
 		// Events
 		virtual void onKeyPressedEvent(const std::shared_ptr<KeyPressEvent>& e) = 0;
 		virtual void onKeyReleasedEvent(const std::shared_ptr<KeyReleaseEvent>& e) = 0;
-		virtual void onMouseMovedEvent(const std::shared_ptr<MouseMovedEvent>& e) = 0;
+		virtual void onMouseMovedEvent(const std::shared_ptr<MouseMoveEvent>& e) = 0;
+		virtual void onMouseButtonPressedEvent(const std::shared_ptr<MouseButtonPressEvent>& e) = 0;
+		virtual void onMouseButtonReleasedEvent(const std::shared_ptr<MouseButtonReleaseEvent>& e) = 0;
 	};
 }

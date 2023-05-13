@@ -32,7 +32,12 @@ namespace VL
 		void onResize(const std::shared_ptr<WindowResizeEvent>& e);
 		void onKeyPress(const std::shared_ptr<KeyPressEvent>& e);
 		void onKeyRelease(const std::shared_ptr<KeyReleaseEvent>& e);
-		void onMouseMove(const std::shared_ptr<MouseMovedEvent>& e);
+		void onMouseMove(const std::shared_ptr<MouseMoveEvent>& e);
+		void onMouseButtonPressEvent(const std::shared_ptr<MouseButtonPressEvent>& e);
+		void onMouseButtonReleaseEvent(const std::shared_ptr<MouseButtonReleaseEvent>& e);
+
+		void setClearColor(vec4 color);
+		void setCursorVisible(bool visible = true);
 
 		void setClient(const std::shared_ptr<Client>& client);
 		Renderer* getRenderer();
