@@ -10,7 +10,8 @@
 #include <utility>
 
 Viewer::Viewer()
-    : m_renderer(nullptr), m_program(nullptr), m_rotation(0.f), m_deltaTime(0.f)
+    : m_renderer(nullptr), m_program(nullptr), 
+    m_rotation(0.f), m_deltaTime(0.f)
 {
 }
 

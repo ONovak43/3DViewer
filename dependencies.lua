@@ -7,7 +7,6 @@ IncludeDir["glad"] = "%{wks.location}/ViewerLib/vendor/glad/include"
 IncludeDir["lodepng"] = "%{wks.location}/ViewerLib/vendor/lodepng"
 IncludeDir["imgui"] = "%{wks.location}/ViewerLib/vendor/imgui"
 IncludeDir["assimp"] = "%{wks.location}/ViewerApp/vendor/assimp/include"
-IncludeDir["glm"] = "%{wks.location}/ViewerApp/vendor/glm"
 
 
 LibraryDir = {}
