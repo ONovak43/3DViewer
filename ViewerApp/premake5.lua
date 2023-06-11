@@ -30,20 +30,23 @@ project "ViewerApp"
 		"%{IncludeDir.lodepng}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.assimp}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.nfd}",		
 	}
 
 	links
 	{
 		"ViewerLib",
 		"imgui",
-		"assimp"
+		"assimp",
+		"nfd_d.lib"
 	}
 
 	
 	libdirs 
 	{
-		"%{LibraryDir.assimp}"
+		"%{LibraryDir.assimp}",
+		"%{LibraryDir.nfd}"
 	}
 
 	filter "system:windows"

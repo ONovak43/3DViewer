@@ -12,5 +12,6 @@ project "Premake"
 
 	postbuildcommands
 	{
-		"\"%{prj.location}bin/premake5\" %{_ACTION} --file=\"%{wks.location}premake5.lua\""
+		"\"%{prj.location}bin/premake5\" %{_ACTION} --file=\"%{wks.location}premake5.lua\"",
+		"copy %{wks.location}/dlls/assimp-vc143-mt.dll %{wks.location}/bin/" .. outputdir .. "/ViewerApp"
 	}
