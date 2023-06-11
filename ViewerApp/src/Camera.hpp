@@ -33,16 +33,16 @@ private:
 
 private:
     VL::mat4 m_viewMatrix;
-    VL::vec3 m_lookAt = VL::vec3(std::array{ 1.0f, 0.0f, 0.0f });
-    VL::vec3 m_position = VL::vec3(0.f);
-    VL::vec3 m_camUp = VL::vec3(std::array{ 0.0f, 1.0f, 0.0f });
+    VL::vec3 m_lookAt{ VL::vec3(std::array{ 1.0f, 0.0f, 0.0f }) };
+    VL::vec3 m_position{ VL::vec3(0.f) };
+    VL::vec3 m_camUp{ VL::vec3(std::array{ 0.0f, 1.0f, 0.0f }) };
 
-    VL::vec3 m_front = VL::vec3(std::array{ 1.0f, 0.0f, 0.0f });
-    VL::vec3 m_right = VL::vec3(std::array{ 0.0f, 0.0f, 1.0f });
-    VL::vec3 m_up = VL::vec3(std::array{ 0.0f, 1.0f, 0.0f });
+    VL::vec3 m_front{ VL::vec3(std::array{ 1.0f, 0.0f, 0.0f }) };
+    VL::vec3 m_right{ VL::vec3(std::array{ 0.0f, 0.0f, 1.0f }) };
+    VL::vec3 m_up{ VL::vec3(std::array{ 0.0f, 1.0f, 0.0f }) };
 
-    float m_yaw = 0.f;
-    float m_pitch = 0.5f;
+    float m_yaw{ 0.f };
+    float m_pitch{ 0.5f };
 
     std::vector<DIRECTION> m_movingDirections;
 };

@@ -8,7 +8,7 @@ ModelRenderer::ModelRenderer(const std::string& modelPath, VL::Renderer* rendere
     ObjectLoader loader(m_renderer);
     m_model = loader.loadModel(modelPath);
 
-	auto meshes = m_model->getMeshes();
+    auto meshes{ m_model->getMeshes() };
 
     for (auto& mesh : meshes)
     {
@@ -18,7 +18,7 @@ ModelRenderer::ModelRenderer(const std::string& modelPath, VL::Renderer* rendere
 
 void ModelRenderer::draw(std::shared_ptr<VL::IShaderProgram>& program)
 {
-    auto meshes = m_model->getMeshes();
+    auto meshes{ m_model->getMeshes() };
 	for (auto i = 0; i < meshes.size(); i++)
 	{
 		prepareTextures(meshes, i, program);
@@ -36,10 +36,10 @@ void ModelRenderer::prepareMesh(const VL::Mesh& mesh)
         VL::VertexAttribute(2, VL::VertexAttribute::Type::FLOAT, offsetof(Vertex, m_uv), sizeof(Vertex)),
     };
 
-    auto VAO = m_renderer->createVertexArray();
-    auto VBO = m_renderer->createVertexBuffer();
+    auto VAO{ m_renderer->createVertexArray() };
+    auto VBO{ m_renderer->createVertexBuffer() };
     VBO->setStaticData(mesh.m_vertices.data(), mesh.m_vertices.size() * sizeof(Vertex));
-    auto EBO = m_renderer->createIndexBuffer(mesh.m_indices);
+    auto EBO{ m_renderer->createIndexBuffer(mesh.m_indices) };
 
     VAO->setVertexBuffer(VBO);
     VAO->setIndexBuffer(EBO);
@@ -49,8 +49,8 @@ void ModelRenderer::prepareMesh(const VL::Mesh& mesh)
 
 void ModelRenderer::prepareTextures(std::vector<VL::Mesh>& meshes, uint32_t meshId, std::shared_ptr<VL::IShaderProgram>& program)
 {
-    auto textureSlot = 0;
-    auto& mesh = meshes[meshId];
+    auto textureSlot{ 0 };
+    auto& mesh{ meshes[meshId] };
 
     for (auto j = 0; j < mesh.m_texturesDiffuse.size(); j++)
     {

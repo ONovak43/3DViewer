@@ -22,6 +22,35 @@ std::shared_ptr<VL::Model> ObjectLoader::loadModel(const std::string& path)
 
     processNode(scene->mRootNode, scene);
 
+    aiVector3D minPoint, maxPoint;
+    auto hasBounds = false;
+
+    for (auto& mesh : m_model->getMeshes())
+    {
+        for (auto& vertex : mesh.m_vertices)
+        {
+            if (!hasBounds)
+            {
+                minPoint = maxPoint = aiVector3D(vertex.m_position[0], vertex.m_position[1], vertex.m_position[2]);
+                hasBounds = true;
+            }
+            else
+            {
+                minPoint.x = std::min(minPoint.x, vertex.m_position[0]);
+                minPoint.y = std::min(minPoint.y, vertex.m_position[1]);
+                minPoint.z = std::min(minPoint.z, vertex.m_position[2]);
+
+                maxPoint.x = std::max(maxPoint.x, vertex.m_position[0]);
+                maxPoint.y = std::max(maxPoint.y, vertex.m_position[1]);
+                maxPoint.z = std::max(maxPoint.z, vertex.m_position[2]);
+            }
+        }
+    }
+
+    m_model->setWidth(maxPoint.x - minPoint.x);
+    m_model->setHeight(maxPoint.y - minPoint.y);
+    m_model->setDepth(maxPoint.z - minPoint.z);
+
     return m_model;
 }
 

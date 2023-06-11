@@ -12,6 +12,8 @@ public:
 	ModelRenderer(const std::string& modelPath, VL::Renderer* renderer);
 	~ModelRenderer() = default;
 	void draw(std::shared_ptr<VL::IShaderProgram>& program);
+	
+	[[no_discard]] std::tuple<float, float, float> getModelDimensions() const { return { m_model->getWidth(), m_model->getHeight(), m_model->getDepth() }; }
 
 private:
 	void prepareMesh(const VL::Mesh& mesh);
