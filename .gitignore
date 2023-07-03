@@ -375,3 +375,5 @@ FodyWeavers.xsd
 /ViewerLib/ViewerLib.vcxproj
 /ViewerLib/ViewerLib.vcxproj.filters
 /ViewerApp/assets/Objects
+/vendor/bin/premake5.exe
+/vendor/bin/premake5.exe

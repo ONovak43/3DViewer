@@ -1,0 +1,6 @@
+[submodule "ViewerLib/vendor/GLFW"]
+	path = ViewerLib/vendor/GLFW
+	url = https://github.com/ONovak43/glfw
+[submodule "ViewerLib/vendor/ImGui"]
+	path = ViewerLib/vendor/ImGui
+	url = https://github.com/ONovak43/imgui
