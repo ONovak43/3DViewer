@@ -6,6 +6,7 @@
 #include "Memory/StackAllocator.hpp"
 #include "Event/EventManager.hpp"
 #include "GUI.hpp"
+#include <Scene/Skybox.hpp>
 
 namespace VL
 {
@@ -17,17 +18,19 @@ namespace VL
 		EventManager m_eventManager;
 		GUI m_gui;
 		vec4 clearColor = vec4(std::array{ 0.0f, 0.0f, 0.0f, 1.0f });
+		std::shared_ptr<Client> m_client;
+		std::unique_ptr<Skybox> m_skybox;
 		bool m_running;
 		bool m_minimized;
-		std::shared_ptr<Client> m_client;
-		
+		bool m_renderSkybox;
+
 	public:
 		Impl();
 		~Impl() = default;
 		void registerEvents();
 		float getDeltaTime();
-		inline void setLastFrameTime() 
-		{ 
+		inline void setLastFrameTime()
+		{
 			m_lastFrameTime = Clock::now();
 		}
 
@@ -42,7 +45,9 @@ namespace VL
 		m_window(),
 		m_client(nullptr),
 		m_minimized(false),
-		m_gui()
+		m_gui(),
+		m_renderSkybox(false),
+		m_skybox(nullptr)
 	{
 	}
 
@@ -51,37 +56,37 @@ namespace VL
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::WINDOW_CLOSE, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onClose(std::dynamic_pointer_cast<WindowCloseEvent>(e));
-		});
+			});
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::WINDOW_RESIZE, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onResize(std::dynamic_pointer_cast<WindowResizeEvent>(e));
-		});
+			});
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::KEY_PRESSED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onKeyPress(std::dynamic_pointer_cast<KeyPressEvent>(e));
-		});
+			});
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::KEY_RELEASED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onKeyRelease(std::dynamic_pointer_cast<KeyReleaseEvent>(e));
-		});
+			});
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_MOVED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onMouseMove(std::dynamic_pointer_cast<MouseMoveEvent>(e));
-		});
+			});
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_BUTTON_PRESSED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onMouseButtonPressEvent(std::dynamic_pointer_cast<MouseButtonPressEvent>(e));
-		});
+			});
 
 		m_eventManager.subscribe(EventManager::EVENT_TYPE::MOUSE_BUTTON_RELEASED, [](std::shared_ptr<Event> e) {
 			Application& app = Application::getInstance();
 			app.onMouseButtonReleaseEvent(std::dynamic_pointer_cast<MouseButtonReleaseEvent>(e));
-		});
+			});
 	}
 
 	float Application::Impl::getDeltaTime()
@@ -141,6 +146,23 @@ namespace VL
 		m_impl->m_client->setRenderer(&(m_impl->m_renderer));
 	}
 
+	void Application::setSkybox(
+		const std::string& shaderPath,
+		const std::string& texturesPath,
+		const std::string& uniformName)
+	{
+		m_impl->m_skybox = std::make_unique<Skybox>(shaderPath, texturesPath, &(m_impl->m_renderer), uniformName);
+	}
+
+	void Application::enableSkyboxRendering(bool enable)
+	{
+		if (m_impl->m_skybox == nullptr) {
+			std::cerr << "Skybox is not set. Call setSkybox before enabling skybox rendering.\n";
+			return;
+		}
+		m_impl->m_renderSkybox = enable;
+	}
+
 	Renderer* Application::getRenderer()
 	{
 		return &m_impl->m_renderer;
@@ -175,6 +197,11 @@ namespace VL
 
 			m_impl->m_renderer.setClearColor(m_impl->clearColor);
 			m_impl->m_renderer.clear();
+
+			if(m_impl->m_renderSkybox == true)
+			{
+				m_impl->m_skybox->render();
+			}
 
 			m_impl->m_client->update(stackAllocator, time);
 

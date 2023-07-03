@@ -24,7 +24,10 @@ namespace VL
 			[[nodiscard]] TEXTURE_TYPE getType() const override;
 
 		private:
-			void createTexture();
+			void prepareCubeMapTexture(const std::string& imagesPath = NULL);
+			void prepare2DTexture(const std::string& imagePath = NULL);
+			void create2DTexture();
+			void createCubeMap();
 			void setParameteri(GLenum parameterName, GLenum parameterValue);
 			GLenum typeToGLenum(TEXTURE_TYPE type);
 

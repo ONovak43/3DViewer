@@ -8,12 +8,13 @@ namespace VL
 	{
 		struct Image
 		{
-			uint32_t width;
-			uint32_t height;
-			std::vector<uint8_t> data;
+			int32_t width;
+			int32_t height;
+			int32_t channels;
+			uint8_t* data;
 
-			Image(std::vector<uint8_t> data, uint32_t width, uint32_t height)
-				: data(data), width(width), height(height)
+			Image(uint8_t* data, int32_t width, int32_t height, int32_t channels)
+				: data(data), width(width), height(height), channels(channels)
 			{
 			}
 		};

@@ -38,8 +38,11 @@ namespace VL
 
 		void setClearColor(vec4 color);
 		void setCursorVisible(bool visible = true);
-
 		void setClient(const std::shared_ptr<Client>& client);
+
+		void setSkybox(const std::string& shaderPath, const std::string& texturesPath, const std::string& uniformName = "cubeMap");
+		void enableSkyboxRendering(bool enable = true);
+
 		Renderer* getRenderer();
 
 	private:

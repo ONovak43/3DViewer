@@ -3,7 +3,8 @@
 #include "ImageAsset.hpp"
 #include "GLShaderAsset.hpp"
 #include "GLShaderProgramAsset.hpp"
-#include "GLTextureAsset.hpp"
+#include "GL2DTextureAsset.hpp"
+#include "GLCubeMapTextureAsset.hpp"
 
 #include "Renderer/OpenGL/OpenGLShader.hpp"
 #include "Renderer/OpenGL/OpenGLShaderProgram.hpp"
@@ -50,6 +51,11 @@ namespace VL
 			return m_gl2DTextureAssets.getAsset(name, cache);
 		}
 
+		inline std::shared_ptr<VL::OpenGL::OpenGLTexture> getCubeMapTexture(const std::string& name, bool cache = true)
+		{
+			return m_glCubeMapTextureAssets.getAsset(name, cache);
+		}
+
 	private:
 		AssetManager();
 		~AssetManager();
@@ -58,5 +64,6 @@ namespace VL
 		GLShaderAsset m_shaderAssets;
 		GLShaderProgramAsset m_shaderProgramAssets;
 		GL2DTextureAsset m_gl2DTextureAssets;
+		GLCubeMapTextureAsset m_glCubeMapTextureAssets;
 	};
 }

@@ -14,7 +14,7 @@ project "ViewerLib"
 		"src/**.cpp",
 		"src/**.hpp",
 		"src/**.inl",
-		"vendor/lodepng/lodepng.cpp",
+		"vendor/stb/stb_image.h"
 	}
 
 	defines
@@ -28,21 +28,20 @@ project "ViewerLib"
 		"src",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
-		"%{IncludeDir.lodepng}",
+		"%{IncludeDir.stb}",
 		"%{IncludeDir.imgui}"
 	}
 
 	links
 	{
+		"opengl32.lib",
+		"GLFW",
 		"glad",
-		"glfw3",
-		"imgui",
-		"opengl32.lib"
+		"ImGui",		
 	}
 
 	libdirs 
 	{
-		"%{LibraryDir.glfw}",
 		"%{LibraryDir.assimp}"
 	}
 
@@ -59,7 +58,6 @@ project "ViewerLib"
 		runtime "Release"
 		optimize "on"
 
-	filter "files:vendor/lodepng/lodepng.cpp"
+	filter "files:vendor/stb/stb_image.h"
 		flags { "NoPCH" }
-	
 		

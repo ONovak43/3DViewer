@@ -11,8 +11,6 @@ project "ViewerApp"
 		"src/**.cpp",
 		"src/**.hpp",
 		"src/**.inl",
-		"vendor/glm/**.hpp",
-		"vendor/glm/**.inl",
 	}
 
 	defines
@@ -27,17 +25,16 @@ project "ViewerApp"
 		"%{IncludeDir.viewerLib}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
-		"%{IncludeDir.lodepng}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.assimp}",
-		"%{IncludeDir.glm}",
 		"%{IncludeDir.nfd}",		
 	}
 
 	links
 	{
 		"ViewerLib",
-		"imgui",
+		"GLFW",
+		"ImGui",
 		"assimp",
 		"nfd_d.lib"
 	}
@@ -46,11 +43,15 @@ project "ViewerApp"
 	libdirs 
 	{
 		"%{LibraryDir.assimp}",
-		"%{LibraryDir.nfd}"
+		"%{LibraryDir.nfd}",
 	}
 
 	filter "system:windows"
 		systemversion "latest"
+		postbuildcommands
+		{
+			"copy %{prj.location}vendor\\assimp\\lib\\assimp-vc143-mt.dll %{wks.location}bin\\" .. outputdir .. "\\%{prj.name}"
+		}
 
 	filter "configurations:Debug"
 		defines "DEBUG"

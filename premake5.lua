@@ -14,6 +14,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
 	include "vendor/premake"
+	include "ViewerLib/vendor/glfw"
 	include "ViewerLib/vendor/glad"
 	include "ViewerLib/vendor/imgui"
 group ""

@@ -1,9 +1,9 @@
-project "imgui"
+project "ImGui"
 	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
-	targetdir ("%{wks.location}/bin/".. outputdir .. "/%{prj.name}")
-	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
+
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
@@ -17,18 +17,24 @@ project "imgui"
 		"imstb_textedit.h",
 		"imstb_truetype.h",
 		"imgui_demo.cpp",
-        "imgui_tables.cpp"
+        "imgui_tables.cpp",
 	}
 
 	filter "system:windows"
 		systemversion "latest"
+		cppdialect "C++17"
+		staticruntime "off"
+
+	filter "system:linux"
+		pic "On"
+		systemversion "latest"
+		cppdialect "C++17"
+		staticruntime "off"
 
 	filter "configurations:Debug"
-		defines "DEBUG"
-			runtime "Debug"
-			symbols "on"
-			
+		runtime "Debug"
+		symbols "on"
+
 	filter "configurations:Release"
-		defines "RELEASE"
-				runtime "Release"
-				optimize "on"
+		runtime "Release"
+		optimize "on"

@@ -19,7 +19,7 @@ namespace {
     bool isAllowedExtension(const std::filesystem::path& path)
     {
         auto extension{ path.extension().string() };
-		return extension == ".gltf" || extension == ".glb" || extension == ".obj";
+		return extension == ".gltf" || extension == ".glb" || extension == ".obj" || ".fbx";
 	}
 
     std::filesystem::path openFile()
@@ -56,13 +56,32 @@ Viewer::Viewer()
 void Viewer::start()
 {
     using VL::AssetManager;
+
     auto path{ std::filesystem::current_path() };
-    auto shaderPath{ path / "assets/Shader/main" };
 
-    std::string shaderAsset{ shaderPath.generic_string() };
-
-    auto _program{ AssetManager::getInstance().getShaderProgram(shaderAsset) };
+    // Load shaders
+    // Main shader
+    auto mainShaderPath{ path / "assets/Shaders/main" };
+    std::string mainShaderAsset{ mainShaderPath.generic_string() };
+    auto _program{ AssetManager::getInstance().getShaderProgram(mainShaderAsset) };
     m_program = std::move(_program);
+
+    // Skybox
+    auto skyboxShaderPath{ path / "assets/Shaders/skybox" };    
+    std::string skyboxShaderAsset{ skyboxShaderPath.generic_string() };
+    auto texturesPath{ (path / "assets/Textures/Skybox/").generic_string() };
+
+    std::string skyboxTextures{
+        texturesPath + "Daylight Box_Back.png;"   +
+        texturesPath + "Daylight Box_Bottom.png;" +
+        texturesPath + "Daylight Box_Front.png;"  +
+        texturesPath + "Daylight Box_Left.png;"   +
+        texturesPath + "Daylight Box_Right.png;"  +
+        texturesPath + "Daylight Box_Top.png"
+    };
+    VL::Application::getInstance().setSkybox(skyboxShaderAsset, skyboxTextures);
+    VL::Application::getInstance().enableSkyboxRendering();
+
     m_camera.setPosition(VL::vec3(std::array{ -1.f, 0.f, 0.f }));
 }
 
@@ -107,7 +126,7 @@ void Viewer::update(VL::StackAllocator<STACK_ALLOCATOR_SIZE>& stackAllocator, fl
 
 void Viewer::renderGUI()
 {
-    auto help = false;
+    bool help = false;
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -187,8 +206,8 @@ void Viewer::onMouseMovedEvent(const std::shared_ptr<VL::MouseMoveEvent>& e)
         return;
     }
 
-    auto x{ e->getX() };
-    auto y{ e->getY() };
+    float x{ e->getX() };
+    float y{ e->getY() };
     static float lastX{ x };
     static float lastY{ y };
 
@@ -199,8 +218,8 @@ void Viewer::onMouseMovedEvent(const std::shared_ptr<VL::MouseMoveEvent>& e)
         lastY = y;
     }
 
-    auto yaw{ m_camera.getYaw() + ((x - lastX) * 0.5f) };
-    auto pitch{ m_camera.getPitch() + ((lastY - y) * 0.5f) };
+    float yaw{ m_camera.getYaw() + ((x - lastX) * 0.5f) };
+    float pitch{ m_camera.getPitch() + ((lastY - y) * 0.5f) };
 
     pitch = std::clamp(pitch, -89.f, 89.f);
     yaw = std::clamp(yaw, -360.f, 360.f);

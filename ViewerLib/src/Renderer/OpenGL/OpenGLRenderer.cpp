@@ -154,6 +154,8 @@ namespace VL
             {
             case TEXTURE_TYPE::TEXTURE_2D:
                 return AssetManager::getInstance().get2DTexture(path);
+            case TEXTURE_TYPE::TEXTURE_CUBE_MAP:
+                return AssetManager::getInstance().getCubeMapTexture(path);
             default:
                 std::cerr << "Texture type not supported.\n";
                 return nullptr;
