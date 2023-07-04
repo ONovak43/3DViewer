@@ -16,8 +16,8 @@ namespace VL
 
 		OpenGLShaderProgram::OpenGLShaderProgram(const std::shared_ptr<OpenGLShader> vertexShader, const std::shared_ptr<OpenGLShader> fragmentShader)
 		{
-			auto vertexId = vertexShader->getId();
-			auto fragId = fragmentShader->getId();
+			uint32_t vertexId = vertexShader->getId();
+			uint32_t fragId = fragmentShader->getId();
 
 			ASSERT(vertexId != 0, "Invalid vertex shader.");
 			ASSERT(fragId != 0, "Invalid fragment shader.");

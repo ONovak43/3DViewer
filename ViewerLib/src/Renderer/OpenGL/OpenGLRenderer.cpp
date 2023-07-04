@@ -165,7 +165,7 @@ namespace VL
         void OpenGLRenderer::renderTriangles(const std::shared_ptr<IVertexArray>& vertexArray, uint32_t indexCount)
         {
             vertexArray->bind();
-            auto c = indexCount == 0 ? vertexArray->getIndexBuffer()->getSize() : indexCount;
+            uint32_t c = indexCount == 0 ? vertexArray->getIndexBuffer()->getSize() : indexCount;
             glDrawElements(GL_TRIANGLES, c, GL_UNSIGNED_INT, nullptr);
             vertexArray->unbind();
         }

@@ -64,7 +64,7 @@ namespace VL
 		{
 			glClearColor(color[0], color[1], color[2], color[3]);
 
-			auto flags = clearColor ? GL_COLOR_BUFFER_BIT : 0;
+			uint32_t flags = clearColor ? GL_COLOR_BUFFER_BIT : 0;
 
 			if (m_depthBuffer)
 			{

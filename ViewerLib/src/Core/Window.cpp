@@ -103,8 +103,8 @@ namespace VL
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		m_impl->m_window = glfwCreateWindow(
-			(int)props.width,
-			(int)props.height,
+			props.width,
+			props.height,
 			props.name.c_str(),
 			nullptr,
 			nullptr

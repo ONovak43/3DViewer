@@ -57,8 +57,8 @@ namespace VL
 			for (auto i = 0; i < attributes.size(); i++)
 			{
 				const auto& [normalized, count, offset, size, type] = attributes[i];
-				const auto normalize = normalized ? GL_TRUE : GL_FALSE;
-				const auto stride = size ? size : defaultStride;
+				const bool normalize = normalized ? GL_TRUE : GL_FALSE;
+				const uint32_t stride = size ? size : defaultStride;
 				const auto typeGL = convertVertexType(type);
 
 				if (attributes[i].m_type == Type::BYTE)

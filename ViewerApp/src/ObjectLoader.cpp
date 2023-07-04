@@ -23,7 +23,7 @@ std::shared_ptr<VL::Model> ObjectLoader::loadModel(const std::string& path)
     processNode(scene->mRootNode, scene);
 
     aiVector3D minPoint, maxPoint;
-    auto hasBounds = false;
+    bool hasBounds = false;
 
     for (auto& mesh : m_model->getMeshes())
     {

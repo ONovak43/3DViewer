@@ -58,7 +58,7 @@ namespace VL
 			create2DTexture();
 
 			bind();
-			auto format = GL_GREEN + image->channels;
+			uint32_t format = GL_GREEN + image->channels;
 			glTexImage2D(m_type, 0, format,
 				image->width, image->height,
 				0, format,GL_UNSIGNED_BYTE,
@@ -81,7 +81,8 @@ namespace VL
 
 			createCubeMap();
 
-			auto i = 0;
+			uint32_t i = 0;
+
 			for (auto&& imagePath : imagesPathSplited)
 			{
 				std::string imageStr{ imagePath };
@@ -94,7 +95,7 @@ namespace VL
 				}
 				
 				bind();
-				auto format = GL_GREEN + image->channels;
+				uint32_t format = GL_GREEN + image->channels;
 				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format,
 					image->width,
 					image->height,

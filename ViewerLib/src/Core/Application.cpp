@@ -193,7 +193,7 @@ namespace VL
 				continue;
 			}
 			
-			auto time = m_impl->getDeltaTime();
+			float time = m_impl->getDeltaTime();
 
 			m_impl->m_renderer.setClearColor(m_impl->clearColor);
 			m_impl->m_renderer.clear();

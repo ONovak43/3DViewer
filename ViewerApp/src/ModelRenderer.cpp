@@ -49,7 +49,7 @@ void ModelRenderer::prepareMesh(const VL::Mesh& mesh)
 
 void ModelRenderer::prepareTextures(std::vector<VL::Mesh>& meshes, uint32_t meshId, std::shared_ptr<VL::IShaderProgram>& program)
 {
-    auto textureSlot{ 0 };
+    uint32_t textureSlot{ 0 };
     auto& mesh{ meshes[meshId] };
 
     for (auto j = 0; j < mesh.m_texturesDiffuse.size(); j++)

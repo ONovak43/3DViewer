@@ -6,6 +6,7 @@ project "Premake"
 
 	files
 	{
+		"%{wks.location}/vendor/bin/premake5.exe",
 		"%{wks.location}/**premake5.lua",
 		"%{wks.location}/dependencies.lua"
 	}
