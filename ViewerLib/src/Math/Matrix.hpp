@@ -111,6 +111,14 @@ namespace VL
 	// Free functions
 
 	/**
+	 * @brief Adds another matrix to this matrix
+	 * @param other Matrix to add
+	 * @return Reference to this matrix after addition
+	 */
+	template <typename T, std::size_t S>
+	constexpr Matrix<T, S> operator+=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
+
+	/**
 	* @brief Overloaded operator for matrix addition
 	* @param lhs The left matrix
 	* @param rhs The right matrix
@@ -118,6 +126,14 @@ namespace VL
 	*/
 	template <typename T, std::size_t S>
 	constexpr Matrix<T, S> operator+(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
+
+	/**
+	 * @brief Subtracts another matrix to this matrix
+	 * @param other Matrix to subtract
+	 * @return Reference to this matrix after subtraction
+	 */
+	template <typename T, std::size_t S>
+	constexpr Matrix<T, S> operator-=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
 
 	/**
 	* @brief Overloaded operator for matrix subtraction

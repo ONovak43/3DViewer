@@ -73,6 +73,16 @@ namespace VL
 	// Free functions
 
 	/**
+	 * @brief Addition assignment operator
+	 * Adds a given vector to the current vector
+	 * @param lhs Vector to be added to
+	 * @param rhs Vector to add
+	 * @return The resulting vector
+	 */
+	template <class T, std::size_t S>
+	constexpr Vector<T, S>& operator+=(Vector<T, S>& lhs, const Vector<T, S>& rhs);
+
+	/**
 	 * @brief Addition operator
 	 * Adds a given vector to the current vector
 	 * @param lhs Vector to add
@@ -81,6 +91,16 @@ namespace VL
 	 */
 	template <class T, std::size_t S>
 	constexpr Vector<T, S> operator+(const Vector<T, S>& lhs, const Vector<T, S>& rhs);
+
+	/**
+	 * @brief Subtraction assignment operator
+	 * Subtracts a given vector from the current vector
+	 * @param lhs Vector to be subtracted from
+	 * @param rhs Vector to subtract
+	 * @return The resulting vector
+	 */
+	template <class T, std::size_t S>
+	constexpr Vector<T, S>& operator-=(Vector<T, S>& lhs, const Vector<T, S>& rhs);
 
 	/**
 	 * @brief Subtraction operator
@@ -93,36 +113,6 @@ namespace VL
 	constexpr Vector<T, S> operator-(const Vector<T, S>& lhs, const Vector<T, S>& rhs);
 
 	/**
-	 * @brief Multiplication operator
-	 * Multiplies the current vector by a given scalar
-	 * @param lhs Vector to multiply
-	 * @param scalar Scalar to multiply by
-	 * @return The resulting vector
-	 */
-	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator*(const Vector<T, S>& lhs, float scalar);
-
-	/**
-	 * @brief Addition-assignment operator
-	 * Adds a given vector to the current vector
-	 * @param lhs Vector to add
-	 * @param rhs Vector to add
-	 * @return Reference to the current vector
-	 */
-	template <class T, std::size_t S>
-	constexpr Vector<T, S>& operator+=(Vector<T, S>& lhs, const Vector<T, S>& rhs);
-
-	/**
-	 * @brief Subtraction-assignment operator
-	 * Subtracts a given vector from the current vector
-	 * @param lhs Vector to subtract from
-	 * @param rhs Vector to subtract
-	 * @return Reference to the current vector
-	 */
-	template <class T, std::size_t S>
-	constexpr Vector<T, S>& operator-=(Vector<T, S>& lhs, const Vector<T, S>& rhs);
-
-	/**
 	 * @brief Multiplication-assignment operator
 	 * Multiplies the current vector by a given scalar
 	 * @param lhs Vector to multiply
@@ -131,6 +121,16 @@ namespace VL
 	 */
 	template <class T, std::size_t S>
 	constexpr Vector<T, S>& operator*=(Vector<T, S>& lhs, float scalar);
+
+	/**
+	 * @brief Multiplication operator
+	 * Multiplies the current vector by a given scalar
+	 * @param lhs Vector to multiply
+	 * @param scalar Scalar to multiply by
+	 * @return The resulting vector
+	 */
+	template <class T, std::size_t S>
+	constexpr Vector<T, S> operator*(const Vector<T, S>& lhs, float scalar);
 
 	// Explicit templates
 	template class Vector<int32_t, 1>;

@@ -44,45 +44,6 @@ namespace VL
 	}
 
 	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator+(const Vector<T, S>& lhs, const Vector<T, S>& rhs)
-	{
-		Vector<T, S> result;
-
-		for (auto i = 0; i < S; ++i)
-		{
-			result[i] = lhs[i] + rhs[i];
-		}
-
-		return result;
-	}
-
-	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator-(const Vector<T, S>& lhs, const Vector<T, S>& rhs)
-	{
-		Vector<T, S> result;
-
-		for (auto i = 0; i < S; ++i)
-		{
-			result[i] = lhs[i] - rhs[i];
-		}
-
-		return result;
-	}
-
-	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator*(const Vector<T, S>& lhs, float rhs)
-	{
-		Vector<T, S> result;
-
-		for (auto i = 0; i < S; ++i)
-		{
-			result[i] = lhs[i] * rhs;
-		}
-
-		return result;
-	}
-
-	template <class T, std::size_t S>
 	constexpr Vector<T, S>& operator+=(Vector<T, S>& lhs, const Vector<T, S>& rhs)
 	{
 		for (auto i = 0; i < S; i++)
@@ -91,6 +52,14 @@ namespace VL
 		}
 
 		return lhs;
+	}
+
+	template <class T, std::size_t S>
+	constexpr Vector<T, S> operator+(const Vector<T, S>& lhs, const Vector<T, S>& rhs)
+	{
+		Vector<T, S> result(lhs);
+		result += rhs;
+		return result;
 	}
 
 	template <class T, std::size_t S>
@@ -105,6 +74,14 @@ namespace VL
 	}
 
 	template <class T, std::size_t S>
+	constexpr Vector<T, S> operator-(const Vector<T, S>& lhs, const Vector<T, S>& rhs)
+	{
+		Vector<T, S> result(lhs);
+		result -= rhs;
+		return result;
+	}
+
+	template <class T, std::size_t S>
 	constexpr Vector<T, S>& operator*=(Vector<T, S>& lhs, float rhs)
 	{
 		for (auto i = 0; i < S; i++)
@@ -113,5 +90,13 @@ namespace VL
 		}
 
 		return lhs;
+	}
+
+	template <class T, std::size_t S>
+	constexpr Vector<T, S> operator*(const Vector<T, S>& lhs, float rhs)
+	{
+		Vector<T, S> result(lhs);
+		result *= rhs;
+		return result;
 	}
 }

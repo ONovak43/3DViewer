@@ -1,3 +1,4 @@
+#include "Matrix.hpp"
 namespace VL
 {
 	template<typename T, std::size_t S>
@@ -74,24 +75,37 @@ namespace VL
 	template<typename T, std::size_t S>
 	constexpr Matrix<T, S> operator+(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
 	{
-		Matrix<T, S> result;
-
-		for (auto i = 0; i < S * S; ++i) {
-			result[i] = lhs[i] + rhs[i];
-		}
+		Matrix<T, S> result(lhs);
+		result += rhs;
 		return result;
+	}
+
+	template<class T, std::size_t S>
+	inline constexpr Matrix<T, S> operator+=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
+	{
+		for (auto i = 0; i < S * S; ++i) {
+			lhs[i] += rhs[i];
+		}
+		return lhs;
 	}
 
 	template<typename T, std::size_t S>
 	constexpr Matrix<T, S> operator-(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
 	{
-		Matrix<T, S> result;
-
-		for (auto i = 0; i < S * S; ++i) {
-			result[i] = lhs[i] - rhs[i];
-		}
+		Matrix<T, S> result(lhs);
+		result -= rhs;
 		return result;
 	}
+
+	template<class T, std::size_t S>
+	inline constexpr Matrix<T, S> operator-=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
+	{
+		for (auto i = 0; i < S * S; ++i) {
+			lhs[i] -= rhs[i];
+		}
+		return lhs;
+	}
+
 
 	template<typename T, std::size_t S>
 	constexpr Matrix<T, S> operator*(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
@@ -112,7 +126,6 @@ namespace VL
 	constexpr Matrix<T, S> operator*(const Matrix<T, S>& matrix, float scale)
 	{
 		Matrix<T, S> result;
-
 		for (auto i = 0; i < S * S; ++i) {
 			result[i] = static_cast<T>(matrix[i] * scale);
 		}
