@@ -12,7 +12,7 @@ namespace VL
 	constexpr Matrix<T, S>::Matrix(T value)
 		: _mData1D{}
 	{
-		for (auto i = 0; i < S; ++i) {
+		for (std::size_t i = 0; i < S; ++i) {
 			_mData2D[i][i] = value;
 		}
 	}
@@ -72,85 +72,96 @@ namespace VL
 		return reinterpret_cast<T*>(_mData2D.data());
 	}
 
-	template<typename T, std::size_t S>
-	constexpr Matrix<T, S> operator+(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
-	{
-		Matrix<T, S> result(lhs);
-		result += rhs;
-		return result;
-	}
-
 	template<class T, std::size_t S>
-	inline constexpr Matrix<T, S> operator+=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
+	inline constexpr Matrix<T, S>& operator+=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
 	{
-		for (auto i = 0; i < S * S; ++i) {
+		for (std::size_t i = 0; i < S * S; ++i) {
 			lhs[i] += rhs[i];
 		}
 		return lhs;
 	}
 
 	template<typename T, std::size_t S>
-	constexpr Matrix<T, S> operator-(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
+	constexpr Matrix<T, S> operator+(Matrix<T, S> lhs, const Matrix<T, S>& rhs)
 	{
-		Matrix<T, S> result(lhs);
-		result -= rhs;
-		return result;
+		lhs += rhs;
+		return lhs;
 	}
 
 	template<class T, std::size_t S>
-	inline constexpr Matrix<T, S> operator-=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
+	inline constexpr Matrix<T, S>& operator-=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
 	{
-		for (auto i = 0; i < S * S; ++i) {
+		for (std::size_t i = 0; i < S * S; ++i) {
 			lhs[i] -= rhs[i];
 		}
 		return lhs;
 	}
 
-
 	template<typename T, std::size_t S>
-	constexpr Matrix<T, S> operator*(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
+	constexpr Matrix<T, S> operator-(Matrix<T, S> lhs, const Matrix<T, S>& rhs)
 	{
-		Matrix<T, S> result;
-		for (auto i = 0; i < S; i++) {
-			for (auto j = 0; j < S; j++) {
-				result(i, j) = 0;
-				for (auto k = 0; k < S; k++) {
-					result(i, j) += lhs(i, k) * rhs(k, j);
-				}
-			}
-		}
-		return result;
-	}
-
-	template<typename T, std::size_t S>
-	constexpr Matrix<T, S> operator*(const Matrix<T, S>& matrix, float scale)
-	{
-		Matrix<T, S> result;
-		for (auto i = 0; i < S * S; ++i) {
-			result[i] = static_cast<T>(matrix[i] * scale);
-		}
-
-		return result;
+		lhs -= rhs;
+		return lhs;
 	}
 
 	template<typename T, std::size_t S>
 	constexpr Matrix<T, S>& operator*=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
 	{
-		lhs = lhs * rhs;
+		Matrix<T, S> result;
+
+		for (std::size_t i = 0; i < S; ++i) {
+			for (auto j = 0; j < S; ++j) {
+				for (auto k = 0; k < S; ++k) {
+					result(i, j) += lhs(i, k) * rhs(k, j);
+				}
+			}
+		}
+
+		lhs = std::move(result);
 		return lhs;
 	}
 
 	template<typename T, std::size_t S>
 	constexpr Matrix<T, S>& operator*=(Matrix<T, S>& matrix, float scale)
 	{
-		matrix = matrix * scale;
+		for (std::size_t i = 0; i < S * S; ++i) {
+			matrix[i] = static_cast<T>(matrix[i] * scale);
+		}
+		return matrix;
+	}
+
+	template<typename T, std::size_t S>
+	constexpr Matrix<T, S>& operator*=(float scale, Matrix<T, S>& matrix)
+	{
+		matrix *= scale;
+		return matrix;
+	}
+
+	template<typename T, std::size_t S>
+	constexpr Matrix<T, S> operator*(Matrix<T, S> lhs, const Matrix<T, S>& rhs)
+	{
+		lhs *= rhs;
+		return lhs;
+	}
+
+	template<typename T, std::size_t S>
+	constexpr Matrix<T, S> operator*(Matrix<T, S> matrix, float scale)
+	{
+		matrix *= scale;
+		return matrix;
+	}
+
+	template<typename T, std::size_t S>
+	constexpr Matrix<T, S> operator*(float scale, Matrix<T, S> matrix)
+	{
+		matrix *= scale;
 		return matrix;
 	}
 
 	template<typename T, std::size_t S>
 	constexpr bool operator==(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs)
 	{
-		for (auto i = 0; i < S * S; ++i) {
+		for (std::size_t i = 0; i < S * S; ++i) {
 			if (lhs[i] != rhs[i]) {
 				return false;
 			}

@@ -90,7 +90,7 @@ namespace VL
 	 * @return The resulting vector
 	 */
 	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator+(const Vector<T, S>& lhs, const Vector<T, S>& rhs);
+	constexpr Vector<T, S> operator+(Vector<T, S> lhs, const Vector<T, S>& rhs);
 
 	/**
 	 * @brief Subtraction assignment operator
@@ -110,7 +110,7 @@ namespace VL
 	 * @return The resulting vector
 	 */
 	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator-(const Vector<T, S>& lhs, const Vector<T, S>& rhs);
+	constexpr Vector<T, S> operator-(Vector<T, S> lhs, const Vector<T, S>& rhs);
 
 	/**
 	 * @brief Multiplication-assignment operator
@@ -130,7 +130,7 @@ namespace VL
 	 * @return The resulting vector
 	 */
 	template <class T, std::size_t S>
-	constexpr Vector<T, S> operator*(const Vector<T, S>& lhs, float scalar);
+	constexpr Vector<T, S> operator*(Vector<T, S> lhs, float scalar);
 
 	// Explicit templates
 	template class Vector<int32_t, 1>;

@@ -116,7 +116,7 @@ namespace VL
 	 * @return Reference to this matrix after addition
 	 */
 	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator+=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
+	constexpr Matrix<T, S>& operator+=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
 
 	/**
 	* @brief Overloaded operator for matrix addition
@@ -125,7 +125,7 @@ namespace VL
 	* @return New matrix representing the result of the addition
 	*/
 	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator+(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
+	constexpr Matrix<T, S> operator+(Matrix<T, S> lhs, const Matrix<T, S>& rhs);
 
 	/**
 	 * @brief Subtracts another matrix to this matrix
@@ -133,7 +133,7 @@ namespace VL
 	 * @return Reference to this matrix after subtraction
 	 */
 	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator-=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
+	constexpr Matrix<T, S>& operator-=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
 
 	/**
 	* @brief Overloaded operator for matrix subtraction
@@ -142,27 +142,9 @@ namespace VL
 	* @return New matrix representing the result of the subtraction
 	*/
 	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator-(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
+	constexpr Matrix<T, S> operator-(Matrix<T, S> lhs, const Matrix<T, S>& rhs);
 
 	/**
-	* @brief Overloaded operator for matrix multiplication
-	* @param lhs The left matrix
-	* @param rhs The right matrix
-	* @return New matrix representing the result of the multiplication
-	*/
-	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator*(const Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
-
-	/**
-	* @brief Overloaded operator for matrix-scalar multiplication
-	* @param lhs The matrix
-	* @param scale The scalar to multiply by
-	* @return New matrix representing the result of the multiplication
-	*/
-	template <typename T, std::size_t S>
-	constexpr Matrix<T, S> operator*(const VL::Matrix<T, S>& matrix, float scale);
-
-	/** 
 	* @brief Overloaded operator for matrix multiplication
 	* @param lhs The left matrix
 	* @param rhs The right matrix
@@ -172,6 +154,16 @@ namespace VL
 	constexpr Matrix<T, S>& operator*=(Matrix<T, S>& lhs, const Matrix<T, S>& rhs);
 
 	/**
+	* @brief Overloaded operator for scalar-matrix multiplication
+	* @param scale The scalar to multiply by
+	* @param lhs The matrix
+	* @return New matrix representing the result of the multiplication
+	*/
+	template<typename T, std::size_t S>
+	constexpr Matrix<T, S>& operator*=(float scale, Matrix<T, S>& matrix);
+
+
+	/**
 	* @brief Overloaded operator for matrix-scalar multiplication
 	* @param lhs The matrix
 	* @param scale The scalar to multiply by
@@ -179,6 +171,34 @@ namespace VL
 	*/
 	template <typename T, std::size_t S>
 	constexpr Matrix<T, S>& operator*=(VL::Matrix<T, S>& matrix, float scale);
+
+
+	/**
+	* @brief Overloaded operator for matrix multiplication
+	* @param lhs The left matrix
+	* @param rhs The right matrix
+	* @return New matrix representing the result of the multiplication
+	*/
+	template <typename T, std::size_t S>
+	constexpr Matrix<T, S> operator*(Matrix<T, S> lhs, const Matrix<T, S>& rhs);
+
+	/**
+	* @brief Overloaded operator for matrix-scalar multiplication
+	* @param lhs The matrix
+	* @param scale The scalar to multiply by
+	* @return New matrix representing the result of the multiplication
+	*/
+	template <typename T, std::size_t S>
+	constexpr Matrix<T, S> operator*(VL::Matrix<T, S> matrix, float scale);
+
+	/**
+	* @brief Overloaded operator for scalar-matrix multiplication
+	* @param scale The scalar to multiply by
+	* @param lhs The matrix
+	* @return New matrix representing the result of the multiplication
+	*/
+	template<typename T, std::size_t S>
+	constexpr Matrix<T, S> operator*(float scale, Matrix<T, S> matrix);
 
 	/**
 	 * @brief Overloaded operator for matrix comparison
